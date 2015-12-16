@@ -1,0 +1,394 @@
+<html>
+<head>
+  <script src="/assets/p5.js"></script>
+  <!-- <script src="/assets/p5.speech.js"></script> -->
+  <script src="/assets/p5.sound.js"></script>
+  <script src="/assets/jquery-1.11.3.min.js"></script>
+  <script src="/assets/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="/assets/bootstrap.css" media="screen" title="no title" charset="utf-8">
+  <!-- <script src="/assets/awesomplete.js"></script> -->
+  <script src="/assets/jquery.scrollTo.min.js"></script>
+  <!-- <script src="/assets/chosen.jquery.min.js"></script> -->
+  <!-- <link rel="stylesheet" href="/assets/awesomplete.css" media="screen" title="no title" charset="utf-8"> -->
+  <!-- <link rel="stylesheet" href="/assets/chosen.css" media="screen" title="no title" charset="utf-8"> -->
+  <link rel="stylesheet" href="/assets/simple-sidebar.css" media="screen" title="no title" charset="utf-8">
+  <link rel="stylesheet" href="/assets/custom.css" media="screen" title="no title" charset="utf-8">
+  <script>
+  var currentSentence = 0;
+
+  </script>
+</head>
+<body>
+
+  <div class="container" >
+
+    <!-- Sidebar -->
+    <!-- <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+    <li class="sidebar-brand" style="height:30px">
+    <button id="listenSelected-btn" type="button" name="button" class="btn icons-button" onclick="listenSelected();" data-original-title="Listen" data-placement="left" data-toggle="tooltip" style="position:fixed; margin-left:160px; margin-top:15px">
+    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
+  </button>
+  <button id="remove-btn" type="button" name="button" class="btn icons-button" onclick="resetCheckboxes();" data-original-title="Reset" data-placement="left" data-toggle="tooltip" style="position:fixed; margin-left:160px; margin-top:60px">
+  <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+</button>
+<a href="#">
+Words
+</a>
+<a href="#" style="position:fixed; margin-left:150px;">
+Words
+</a>
+
+</li>
+</ul>
+</div> -->
+<!-- /#sidebar-wrapper -->
+
+<!-- <div class="site-wrapper-inner"> -->
+<!-- <div class="cover-container"> -->
+
+<!-- <div class="vertical-center" id="haiku-body"> -->
+<div>
+  <div class="row">
+    <div id="wind"  class="col-md-6"><a id="wind-link" href="#">wind</a>
+      <ul>
+      </ul>
+    </div>
+
+    <div id="seastate" class="col-md-6"><a id="seastate-link" href="#">sea state</a>
+      <ul>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div id="weather" class="col-md-6"><a id="weather-link" href="#">weather</a>
+      <ul>
+      </ul>
+    </div>
+    <div id="visibility" class="col-md-6"><a id="visibility-link" href="#">visibility</a>
+      <ul>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- </div> -->
+<!-- </div> -->
+</div>
+<script type="text/javascript">
+function setup()
+{
+	noCanvas();
+}
+
+String.prototype.cleanupDash = function() {
+  var string = this.replace(".", "");
+  return string.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-");
+}
+
+String.prototype.cleanup = function() {
+  return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "");
+}
+
+function numberToText(number) {
+	switch (parseInt(number)) {
+		case 0:
+		return "zero";
+		break;
+		case 1:
+		return "one";
+		break;
+		case 2:
+		return "two";
+		break;
+		case 3:
+		return "three";
+		break;
+		case 4:
+		return "four";
+		break;
+		case 5:
+		return "five";
+		break;
+		case 6:
+		return "six";
+		break;
+		case 7:
+		return "seven";
+		break;
+		case 8:
+		return "eight";
+		break;
+		case 9:
+		return "nine";
+		break;
+		case 10:
+		return "ten";
+		break;
+		default:
+		return;
+	}
+}
+
+var obj1 = {"report":{"xmlns:xsi":"http://www.w3.org/2001/XMLSchema-instance","creation-time":"2015-12-05T23:36:00","title":"Shipping forecast","issue":{"date":"2015-12-05","time":"2315"},"gales":{"shipping-area":["Viking","North Utsire","South Utsire","Forties","Cromarty","Forth","Tyne","Dogger","Fisher","German Bight","Humber","Thames","Dover","Wight","Portland","Plymouth","Fitzroy","Sole","Lundy","Fastnet","Irish Sea","Shannon","Rockall","Malin","Hebrides","Bailey","Fair Isle","Faeroes","Southeast Iceland"]},"general-synopsis":{"valid":{"time":"1800"},"gs-text":"Low Scotland 986 and low 200 miles north of Faeroes 951 losing their identities by 1800 Sunday. New low moving rather quickly northeast expected 350 miles west of Fitzroy 987 by same time"},"area-forecasts":{"period":"24","total-num":"12","area-forecast":[{"all":"Viking, North Utsire, South Utsire, Forties, Cromarty","wind":"Southwesterly veering westerly, 7 to severe gale 9, occasionally storm 10 at first in South Utsire and Forties, decreasing 5 or 6 later.","seastate":"Very rough or high, becoming moderate or rough later in Cromarty.","visibility":"Moderate, occasionally poor","weather":"Rain then squally showers.","area":[{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Rain then squally showers.","wind":"Southwesterly veering westerly, 7 to severe gale 9, decreasing 5 or 6 later.","main":"Viking","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Rain then squally showers.","wind":"Southwesterly veering westerly, 7 to severe gale 9, decreasing 5 or 6 later.","main":"North Utsire","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Rain then squally showers.","wind":"Southwesterly veering westerly, 7 to severe gale 9, occasionally storm 10 at first, decreasing 5 or 6 later.","main":"South Utsire","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Rain then squally showers.","wind":"Southwesterly veering westerly, 7 to severe gale 9, occasionally storm 10 at first, decreasing 5 or 6 later.","main":"Forties","sub":{}},{"seastate":"Very rough or high, becoming moderate or rough later.","visibility":"Moderate, occasionally poor.","weather":"Rain then squally showers.","wind":"Southwesterly veering westerly, 7 to severe gale 9, decreasing 5 or 6 later.","main":"Cromarty","sub":{}}]},{"all":"Forth, Tyne, Dogger, Fisher, German Bight","wind":"Southwesterly gale 8 to storm 10, veering westerly 7 to severe gale 9, decreasing 5 or 6 later except in east Fisher.","seastate":"Rough or very rough, occasionally high in Dogger, Fisher and German Bight.","visibility":"Good, occasionally poor","weather":"Rain then showers.","area":[{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Rain then showers.","wind":"Southwesterly gale 8 to storm 10, veering westerly 7 to severe gale 9, decreasing 5 or 6 later.","main":"Forth","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Rain then showers.","wind":"Southwesterly gale 8 to storm 10, veering westerly 7 to severe gale 9, decreasing 5 or 6 later.","main":"Tyne","sub":{}},{"seastate":"Rough or very rough, occasionally high.","visibility":"Good, occasionally poor.","weather":"Rain then showers.","wind":"Southwesterly gale 8 to storm 10, veering westerly 7 to severe gale 9, decreasing 5 or 6 later.","main":"Dogger","sub":{}},{"seastate":"Rough or very rough, occasionally high.","visibility":"Good, occasionally poor.","weather":"Rain then showers.","wind":"Southwesterly gale 8 to storm 10, veering westerly 7 to severe gale 9, decreasing 5 or 6 later except in east.","main":"Fisher","sub":{}},{"seastate":"Rough or very rough, occasionally high.","visibility":"Good, occasionally poor.","weather":"Rain then showers.","wind":"Southwesterly gale 8 to storm 10, veering westerly 7 to severe gale 9, decreasing 5 or 6 later.","main":"German Bight","sub":{}}]},{"all":"Humber, Thames, Dover, Wight, Portland, Plymouth","wind":"West or southwest 7 to severe gale 9, occasionally storm 10 at first in Thames and Dover, decreasing 5 or 6 later.","seastate":"Rough or very rough, occasionally high at first in Plymouth.","visibility":"Moderate or good, occasionally poor","weather":"Occasional rain.","area":[{"seastate":"Rough or very rough.","visibility":"Moderate or good, occasionally poor.","weather":"Occasional rain.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6 later.","main":"Humber","sub":{}},{"seastate":"Rough or very rough.","visibility":"Moderate or good, occasionally poor.","weather":"Occasional rain.","wind":"West or southwest 7 to severe gale 9, occasionally storm 10 at first, decreasing 5 or 6 later.","main":"Thames","sub":{}},{"seastate":"Rough or very rough.","visibility":"Moderate or good, occasionally poor.","weather":"Occasional rain.","wind":"West or southwest 7 to severe gale 9, occasionally storm 10 at first, decreasing 5 or 6 later.","main":"Dover","sub":{}},{"seastate":"Rough or very rough.","visibility":"Moderate or good, occasionally poor.","weather":"Occasional rain.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6 later.","main":"Wight","sub":{}},{"seastate":"Rough or very rough.","visibility":"Moderate or good, occasionally poor.","weather":"Occasional rain.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6 later.","main":"Portland","sub":{}},{"seastate":"Rough or very rough, occasionally high at first.","visibility":"Moderate or good, occasionally poor.","weather":"Occasional rain.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6 later.","main":"Plymouth","sub":{}}]},{"all":"Northwest Biscay","wind":"Southwesterly 6 or 7, decreasing 4 or 5, occasionally 6 later.","seastate":"Very rough, occasionally high at first.","visibility":"Moderate, occasionally poor","weather":"Occasional rain.","area":{"seastate":"In northwest, very rough, occasionally high at first.  in southeast, rough or very rough.","visibility":"In northwest, moderate, occasionally poor.  In southeast, good, occasionally poor.","weather":"In northwest, occasional rain.  In southeast, mainly fair.","wind":"In northwest, southwesterly 6 or 7, decreasing 4 or 5, occasionally 6 later.  In southeast, southerly 4 or 5.","main":"Biscay","sub":{}}},{"all":"Southeast Biscay","wind":"Southerly 4 or 5.","seastate":"Rough or very rough.","visibility":"Good, occasionally poor","weather":"Mainly fair.","area":{"seastate":"In northwest, very rough, occasionally high at first.  in southeast, rough or very rough.","visibility":"In northwest, moderate, occasionally poor.  In southeast, good, occasionally poor.","weather":"In northwest, occasional rain.  In southeast, mainly fair.","wind":"In northwest, southwesterly 6 or 7, decreasing 4 or 5, occasionally 6 later.  In southeast, southerly 4 or 5.","main":"Biscay","sub":{}}},{"all":"Southeast Trafalgar","wind":"Cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.","seastate":"Moderate or rough.","visibility":"Good, occasionally poor","weather":"Mainly fair.","area":{"seastate":"In southeast, moderate or rough.  in northwest, rough or very rough.","visibility":"Good, occasionally poor.","weather":"In southeast, mainly fair.  In northwest, occasional rain.","wind":"In southeast, cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.  In northwest, southerly or southwesterly 5 or 6, occasionally 7 later.","main":"Trafalgar","sub":{}}},{"all":"Northwest Trafalgar, Southeast Fitzroy","wind":"Southerly or southwesterly 5 or 6, occasionally 7 later.","seastate":"Rough or very rough.","visibility":"Good, occasionally poor","weather":"Occasional rain.","area":[{"seastate":"In southeast, moderate or rough.  in northwest, rough or very rough.","visibility":"Good, occasionally poor.","weather":"In southeast, mainly fair.  In northwest, occasional rain.","wind":"In southeast, cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.  In northwest, southerly or southwesterly 5 or 6, occasionally 7 later.","main":"Trafalgar","sub":{}},{"seastate":"In southeast, rough or very rough.  in northwest, very rough or high.","visibility":"In southeast, good, occasionally poor.  In northwest, poor.","weather":"Occasional rain.","wind":"In southeast, southerly or southwesterly 5 or 6, occasionally 7 later.  In northwest, southwesterly 6 to gale 8, backing southerly or southeasterly 5 to 7, occasionally gale 8 later.","main":"Fitzroy","sub":{}}]},{"all":"Northwest Fitzroy, Sole","wind":"Southwesterly 6 to gale 8, backing southerly or southeasterly 5 to 7, occasionally gale 8 later.","seastate":"Very rough or high.","visibility":"Poor","weather":"Occasional rain.","area":[{"seastate":"In southeast, rough or very rough.  in northwest, very rough or high.","visibility":"In southeast, good, occasionally poor.  In northwest, poor.","weather":"Occasional rain.","wind":"In southeast, southerly or southwesterly 5 or 6, occasionally 7 later.  In northwest, southwesterly 6 to gale 8, backing southerly or southeasterly 5 to 7, occasionally gale 8 later.","main":"Fitzroy","sub":{}},{"seastate":"Very rough or high.","visibility":"Poor.","weather":"Occasional rain.","wind":"Southwesterly 6 to gale 8, backing southerly or southeasterly 5 to 7, occasionally gale 8 later.","main":"Sole","sub":{}}]},{"all":"Lundy, Fastnet, Irish Sea","wind":"Southwest gale 8 to storm 10, veering west then backing south later, 5 to 7, becoming cyclonic 4 or 5 for a time.","seastate":"Very rough or high, becoming moderate or rough in Irish Sea.","visibility":"Moderate or poor","weather":"Rain or showers.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Rain or showers.","wind":"Southwest gale 8 to storm 10, veering west then backing south later, 5 to 7, becoming cyclonic 4 or 5 for a time.","main":"Lundy","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Rain or showers.","wind":"Southwest gale 8 to storm 10, veering west then backing south later, 5 to 7, becoming cyclonic 4 or 5 for a time.","main":"Fastnet","sub":{}},{"seastate":"Very rough or high, becoming moderate or rough.","visibility":"Moderate or poor.","weather":"Rain or showers.","wind":"Southwest gale 8 to storm 10, veering west then backing south later, 5 to 7, becoming cyclonic 4 or 5 for a time.","main":"Irish Sea","sub":{}}]},{"all":"Shannon, Rockall, Malin","wind":"Southwesterly 7 to severe gale 9 at first in southeast Shannon, otherwise westerly or northwesterly 5 to 7, backing southerly or southeasterly 6 to gale 8 later.","seastate":"Very rough or high, occasionally very high at first in Shannon.","visibility":"Moderate or poor","weather":"Rain or squally showers.","area":[{"seastate":"Very rough or high, occasionally very high at first.","visibility":"Moderate or poor.","weather":"Rain or squally showers.","wind":"Southwesterly 7 to severe gale 9 at first in southeast, otherwise westerly or northwesterly 5 to 7, backing southerly or southeasterly 6 to gale 8 later.","main":"Shannon","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Rain or squally showers.","wind":"Westerly or northwesterly 5 to 7, backing southerly or southeasterly 6 to gale 8 later.","main":"Rockall","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Rain or squally showers.","wind":"Westerly or northwesterly 5 to 7, backing southerly or southeasterly 6 to gale 8 later.","main":"Malin","sub":{}}]},{"all":"Hebrides, Bailey, Fair Isle, Faeroes","wind":"West veering northwest 7 to severe gale 9, becoming cyclonic 4 or 5 later.","seastate":"Very rough or high.","visibility":"Moderate or poor","weather":"Squally wintry showers.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally wintry showers.","wind":"West veering northwest 7 to severe gale 9, becoming cyclonic 4 or 5 later.","main":"Hebrides","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally wintry showers.","wind":"West veering northwest 7 to severe gale 9, becoming cyclonic 4 or 5 later.","main":"Bailey","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally wintry showers.","wind":"West veering northwest 7 to severe gale 9, becoming cyclonic 4 or 5 later.","main":"Fair Isle","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally wintry showers.","wind":"West veering northwest 7 to severe gale 9, becoming cyclonic 4 or 5 later.","main":"Faeroes","sub":{}}]},{"all":"Southeast Iceland","wind":"Northerly 7 to severe gale 9, becoming cyclonic 5 or 6 later.","seastate":"Very rough or high, occasionally very high at first.","visibility":"Moderate or poor","weather":"Squally wintry showers.","area":{"seastate":"Very rough or high, occasionally very high at first.","visibility":"Moderate or poor.","weather":"Squally wintry showers.","wind":"Northerly 7 to severe gale 9, becoming cyclonic 5 or 6 later.","main":"Southeast Iceland","sub":{}}}]}}};
+var obj2 = {"report":{"xmlns:xsi":"http://www.w3.org/2001/XMLSchema-instance","creation-time":"2015-12-06T04:58:00","title":"Shipping forecast","issue":{"date":"2015-12-06","time":"0405"},"gales":{"shipping-area":["Viking","North Utsire","South Utsire","Forties","Cromarty","Forth","Tyne","Dogger","Fisher","German Bight","Humber","Thames","Dover","Wight","Portland","Plymouth","Fitzroy","Sole","Lundy","Fastnet","Irish Sea","Shannon","Rockall","Malin","Hebrides","Bailey","Fair Isle","Faeroes","Southeast Iceland"]},"general-synopsis":{"valid":{"time":"midnight"},"gs-text":"Low Southeast Iceland 962 and low northeast Shannon 996 losing their identities by midnight tonight. New low moving rather quickly northeast expected 200 miles west of Shannon 978 by same time"},"area-forecasts":{"period":"24","total-num":"11","area-forecast":[{"all":"Viking, North Utsire, South Utsire","wind":"Westerly 7 to severe gale 9, veering northwest 5 or 6 later.","seastate":"Very rough or high.","visibility":"Moderate, occasionally poor","weather":"Squally showers.","area":[{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"Westerly 7 to severe gale 9, veering northwest 5 or 6 later.","main":"Viking","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"Westerly 7 to severe gale 9, veering northwest 5 or 6 later.","main":"North Utsire","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"Westerly 7 to severe gale 9, veering northwest 5 or 6 later.","main":"South Utsire","sub":{}}]},{"all":"Forties, Cromarty, Forth, Tyne, Dogger","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6, backing southeast later.","seastate":"Rough or very rough, occasionally high in Forties.","visibility":"Moderate, occasionally poor","weather":"Squally showers.","area":[{"seastate":"Rough or very rough, occasionally high.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6, backing southeast later.","main":"Forties","sub":{}},{"seastate":"Rough or very rough.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6, backing southeast later.","main":"Cromarty","sub":{}},{"seastate":"Rough or very rough.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6, backing southeast later.","main":"Forth","sub":{}},{"seastate":"Rough or very rough.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6, backing southeast later.","main":"Tyne","sub":{}},{"seastate":"Rough or very rough.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"West or southwest 7 to severe gale 9, decreasing 5 or 6, backing southeast later.","main":"Dogger","sub":{}}]},{"all":"Fisher, German Bight","wind":"Southwest veering west, 7 to severe gale 9, decreasing 5 or 6 later.","seastate":"Very rough or high, becoming rough in German Bight later.","visibility":"Moderate, occasionally poor","weather":"Squally showers.","area":[{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"Southwest veering west, 7 to severe gale 9, decreasing 5 or 6 later.","main":"Fisher","sub":{}},{"seastate":"Very rough or high, becoming rough later.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"Southwest veering west, 7 to severe gale 9, decreasing 5 or 6 later.","main":"German Bight","sub":{}}]},{"all":"Humber, Thames, Dover, Wight, Portland, Plymouth","wind":"Southwest 6 to gale 8, decreasing 5 or 6, occasionally severe gale 9 at first in Thames and Dover.","seastate":"Rough or very rough, occasionally high at first in Plymouth.","visibility":"Good, occasionally poor","weather":"Occasional rain.","area":[{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, decreasing 5 or 6.","main":"Humber","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, decreasing 5 or 6, occasionally severe gale 9 at first.","main":"Thames","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, decreasing 5 or 6, occasionally severe gale 9 at first.","main":"Dover","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, decreasing 5 or 6.","main":"Wight","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, decreasing 5 or 6.","main":"Portland","sub":{}},{"seastate":"Rough or very rough, occasionally high at first.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, decreasing 5 or 6.","main":"Plymouth","sub":{}}]},{"all":"Biscay","wind":"South or southwest 5 or 6.","seastate":"Rough or very rough.","visibility":"Good, occasionally poor","weather":"Occasional rain.","area":{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"South or southwest 5 or 6.","main":"Biscay","sub":{}}},{"all":"Fitzroy, Sole","wind":"Southwest 5 to 7, backing south 7 to severe gale 9 later.","seastate":"Very rough or high.","visibility":"Moderate or poor","weather":"Occasional rain.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"Southwest 5 to 7, backing south 7 to severe gale 9 later.","main":"Fitzroy","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"Southwest 5 to 7, backing south 7 to severe gale 9 later.","main":"Sole","sub":{}}]},{"all":"Lundy, Fastnet, Irish Sea","wind":"Southwest 6 to gale 8, occasionally severe gale 9 at first in Irish Sea, becoming cyclonic 5 or 6, then south 5 to 7 later.","seastate":"Very rough or high, becoming moderate or rough in Irish Sea.","visibility":"Moderate or poor","weather":"Occasional rain.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, becoming cyclonic 5 or 6, then south 5 to 7 later.","main":"Lundy","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, becoming cyclonic 5 or 6, then south 5 to 7 later.","main":"Fastnet","sub":{}},{"seastate":"Very rough or high, becoming moderate or rough.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, occasionally severe gale 9 at first, becoming cyclonic 5 or 6, then south 5 to 7 later.","main":"Irish Sea","sub":{}}]},{"all":"Shannon","wind":"West 5 or 6, backing south or southeast 6 to gale 8, occasionally severe gale 9 later.","seastate":"Very rough or high, occasionally very high at first.","visibility":"Moderate or poor","weather":"Rain.","area":{"seastate":"Very rough or high, occasionally very high at first.","visibility":"Moderate or poor.","weather":"Rain.","wind":"West 5 or 6, backing south or southeast 6 to gale 8, occasionally severe gale 9 later.","main":"Shannon","sub":{}}},{"all":"Rockall, Malin, Hebrides, Bailey","wind":"West 6 to gale 8, occasionally severe gale force 9 at first in Hebrides and Bailey, backing southeast 7 to severe gale 9 later, becoming variable 4 for a time.","seastate":"Very rough or high.","visibility":"Moderate or poor","weather":"Squally showers, rain later.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally showers, rain later.","wind":"West 6 to gale 8, backing southeast 7 to severe gale 9 later, becoming variable 4 for a time.","main":"Rockall","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally showers, rain later.","wind":"West 6 to gale 8, backing southeast 7 to severe gale 9 later, becoming variable 4 for a time.","main":"Malin","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally showers, rain later.","wind":"West 6 to gale 8, occasionally severe gale force 9 at first, backing southeast 7 to severe gale 9 later, becoming variable 4 for a time.","main":"Hebrides","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally showers, rain later.","wind":"West 6 to gale 8, occasionally severe gale force 9 at first, backing southeast 7 to severe gale 9 later, becoming variable 4 for a time.","main":"Bailey","sub":{}}]},{"all":"Fair Isle, Faeroes","wind":"West or northwest 7 to severe gale 9, veering southeast 5 or 6 later, becoming variable 4 for a time.","seastate":"Very rough or high.","visibility":"Moderate or poor","weather":"Squally wintry showers at first.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally wintry showers at first.","wind":"West or northwest 7 to severe gale 9, veering southeast 5 or 6 later, becoming variable 4 for a time.","main":"Fair Isle","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Squally wintry showers at first.","wind":"West or northwest 7 to severe gale 9, veering southeast 5 or 6 later, becoming variable 4 for a time.","main":"Faeroes","sub":{}}]},{"all":"Southeast Iceland","wind":"Northerly 7 to severe gale 9, becoming cyclonic 5 or 6, then southeasterly 5 to 7 later.","seastate":"Very rough or high, occasionally very high at first.","visibility":"Moderate or poor","weather":"Squally wintry showers at first.","area":{"seastate":"Very rough or high, occasionally very high at first.","visibility":"Moderate or poor.","weather":"Squally wintry showers at first.","wind":"Northerly 7 to severe gale 9, becoming cyclonic 5 or 6, then southeasterly 5 to 7 later.","main":"Southeast Iceland","sub":{}}},{"all":"Trafalgar","wind":"In southeast, cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.  In northwest, southerly or southwesterly 5 or 6, occasionally 7 later.","seastate":"In southeast, moderate or rough.  in northwest, rough or very rough.","visibility":"Good, occasionally poor.","weather":"In southeast, mainly fair.  In northwest, occasional rain.","area":{"issuedate":"2015-12-05","issuetime":"2315","seastate":"In southeast, moderate or rough.  in northwest, rough or very rough.","visibility":"Good, occasionally poor.","weather":"In southeast, mainly fair.  In northwest, occasional rain.","wind":"In southeast, cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.  In northwest, southerly or southwesterly 5 or 6, occasionally 7 later.","main":"Trafalgar","sub":{}}}]}}};
+var obj3 = {"report":{"xmlns:xsi":"http://www.w3.org/2001/XMLSchema-instance","creation-time":"2015-12-06T10:50:00","title":"Shipping forecast","issue":{"date":"2015-12-06","time":"1030"},"gales":{"shipping-area":["Viking","North Utsire","South Utsire","Forties","Cromarty","Forth","Tyne","Dogger","Fisher","German Bight","Humber","Thames","Dover","Wight","Portland","Plymouth","Fitzroy","Sole","Lundy","Fastnet","Irish Sea","Shannon","Rockall","Malin","Hebrides","Bailey","Fair Isle","Faeroes","Southeast Iceland"]},"general-synopsis":{"valid":{"time":"0600"},"gs-text":"Low mid Atlantic 998 expected 250 miles west of Rockall 968 by 0600 tomorrow. Low Norwegian Sea 957 moving away northeastwards"},"area-forecasts":{"period":"24","total-num":"12","area-forecast":[{"all":"Viking, North Utsire","wind":"Westerly gale 8 to storm 10, veering northwesterly 5 to 7 later.","seastate":"Very rough or high.","visibility":"Moderate, occasionally poor","weather":"Squally showers.","area":[{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"Westerly gale 8 to storm 10, veering northwesterly 5 to 7 later.","main":"Viking","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate, occasionally poor.","weather":"Squally showers.","wind":"Westerly gale 8 to storm 10, veering northwesterly 5 to 7 later.","main":"North Utsire","sub":{}}]},{"all":"South Utsire, Forties, Cromarty","wind":"Westerly 7 to severe gale 9, backing southeasterly 5 to 7 later.","seastate":"Very rough or high.","visibility":"Mainly good","weather":"Showers, rain later.","area":[{"seastate":"Very rough or high.","visibility":"Mainly good.","weather":"Showers, rain later.","wind":"Westerly 7 to severe gale 9, backing southeasterly 5 to 7 later.","main":"South Utsire","sub":{}},{"seastate":"Very rough or high.","visibility":"Mainly good.","weather":"Showers, rain later.","wind":"Westerly 7 to severe gale 9, backing southeasterly 5 to 7 later.","main":"Forties","sub":{}},{"seastate":"Very rough or high.","visibility":"Mainly good.","weather":"Showers, rain later.","wind":"Westerly 7 to severe gale 9, backing southeasterly 5 to 7 later.","main":"Cromarty","sub":{}}]},{"all":"Forth, Tyne, Northwest Dogger","wind":"Westerly backing southeasterly later, 5 to 7, occasionally gale 8 at first.","seastate":"Moderate or rough.","visibility":"Mainly good","weather":"Rain later.","area":[{"seastate":"Moderate or rough.","visibility":"Mainly good.","weather":"Rain later.","wind":"Westerly backing southeasterly later, 5 to 7, occasionally gale 8 at first.","main":"Forth","sub":{}},{"seastate":"Moderate or rough.","visibility":"Mainly good.","weather":"Rain later.","wind":"Westerly backing southeasterly later, 5 to 7, occasionally gale 8 at first.","main":"Tyne","sub":{}},{"seastate":"In northwest, moderate or rough.  in southeast, very rough or high, becoming rough or very rough.","visibility":"In northwest, mainly good.  In southeast, moderate or poor, becoming good.","weather":"In northwest, rain later.  In southeast, rain then showers.","wind":"In northwest, westerly backing southeasterly later, 5 to 7, occasionally gale 8 at first.  In southeast, southwesterly veering westerly 6 to gale 8, occasionally severe gale 9 at first, decreasing 4 or 5 later.","main":"Dogger","sub":{}}]},{"all":"Southeast Dogger, Fisher, German Bight","wind":"Southwesterly veering westerly 6 to gale 8, occasionally severe gale 9 at first, decreasing 4 or 5 later.","seastate":"Very rough or high, becoming rough or very rough.","visibility":"Moderate or poor, becoming good","weather":"Rain then showers.","area":[{"seastate":"In northwest, moderate or rough.  in southeast, very rough or high, becoming rough or very rough.","visibility":"In northwest, mainly good.  In southeast, moderate or poor, becoming good.","weather":"In northwest, rain later.  In southeast, rain then showers.","wind":"In northwest, westerly backing southeasterly later, 5 to 7, occasionally gale 8 at first.  In southeast, southwesterly veering westerly 6 to gale 8, occasionally severe gale 9 at first, decreasing 4 or 5 later.","main":"Dogger","sub":{}},{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Moderate or poor, becoming good.","weather":"Rain then showers.","wind":"Southwesterly veering westerly 6 to gale 8, occasionally severe gale 9 at first, decreasing 4 or 5 later.","main":"Fisher","sub":{}},{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Moderate or poor, becoming good.","weather":"Rain then showers.","wind":"Southwesterly veering westerly 6 to gale 8, occasionally severe gale 9 at first, decreasing 4 or 5 later.","main":"German Bight","sub":{}}]},{"all":"Humber, Thames, Dover, Wight, Portland, Plymouth","wind":"Southwest 6 to gale 8, backing south 5 to 7.","seastate":"Rough or very rough.","visibility":"Good, occasionally poor","weather":"Occasional rain.","area":[{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, backing south 5 to 7.","main":"Humber","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, backing south 5 to 7.","main":"Thames","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, backing south 5 to 7.","main":"Dover","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, backing south 5 to 7.","main":"Wight","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, backing south 5 to 7.","main":"Portland","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest 6 to gale 8, backing south 5 to 7.","main":"Plymouth","sub":{}}]},{"all":"Biscay","wind":"Southwest backing south 5 to 7.","seastate":"Rough or very rough.","visibility":"Good, occasionally poor","weather":"Occasional rain.","area":{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Southwest backing south 5 to 7.","main":"Biscay","sub":{}}},{"all":"Fitzroy, Sole","wind":"Southwest 5 to 7, backing south 7 to severe gale 9.","seastate":"Very rough or high.","visibility":"Moderate or poor","weather":"Occasional rain.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"Southwest 5 to 7, backing south 7 to severe gale 9.","main":"Fitzroy","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"Southwest 5 to 7, backing south 7 to severe gale 9.","main":"Sole","sub":{}}]},{"all":"Lundy, Fastnet, Irish Sea","wind":"Cyclonic, becoming southeast 5 to 7, veering south 6 to gale 8 later.","seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good, occasionally poor","weather":"Occasional rain.","area":[{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Cyclonic, becoming southeast 5 to 7, veering south 6 to gale 8 later.","main":"Lundy","sub":{}},{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Cyclonic, becoming southeast 5 to 7, veering south 6 to gale 8 later.","main":"Fastnet","sub":{}},{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Cyclonic, becoming southeast 5 to 7, veering south 6 to gale 8 later.","main":"Irish Sea","sub":{}}]},{"all":"Shannon","wind":"Variable 4, becoming southeast 7 to severe gale 9, veering south gale 8 to storm 10 later.","seastate":"Very rough or high.","visibility":"Moderate or poor","weather":"Rain.","area":{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Rain.","wind":"Variable 4, becoming southeast 7 to severe gale 9, veering south gale 8 to storm 10 later.","main":"Shannon","sub":{}}},{"all":"Rockall, Malin, Hebrides, Bailey","wind":"West 6 to gale 8, decreasing 4 or 5, backing south or southeast 7 to severe gale 9, occasionally storm 10 later in Rockall and Bailey.","seastate":"Very rough or high.","visibility":"Good, becoming moderate or poor","weather":"Showers then rain.","area":[{"seastate":"Very rough or high.","visibility":"Good, becoming moderate or poor.","weather":"Showers then rain.","wind":"West 6 to gale 8, decreasing 4 or 5, backing south or southeast 7 to severe gale 9, occasionally storm 10 later.","main":"Rockall","sub":{}},{"seastate":"Very rough or high.","visibility":"Good, becoming moderate or poor.","weather":"Showers then rain.","wind":"West 6 to gale 8, decreasing 4 or 5, backing south or southeast 7 to severe gale 9.","main":"Malin","sub":{}},{"seastate":"Very rough or high.","visibility":"Good, becoming moderate or poor.","weather":"Showers then rain.","wind":"West 6 to gale 8, decreasing 4 or 5, backing south or southeast 7 to severe gale 9.","main":"Hebrides","sub":{}},{"seastate":"Very rough or high.","visibility":"Good, becoming moderate or poor.","weather":"Showers then rain.","wind":"West 6 to gale 8, decreasing 4 or 5, backing south or southeast 7 to severe gale 9, occasionally storm 10 later.","main":"Bailey","sub":{}}]},{"all":"Fair Isle","wind":"West gale 8 to storm 10 veering northwest 5 to 7, then veering southeast 7 to severe gale 9 later.","seastate":"Very rough or high.","visibility":"Good, occasionally poor","weather":"Squally showers.","area":{"seastate":"Very rough or high.","visibility":"Good, occasionally poor.","weather":"Squally showers.","wind":"West gale 8 to storm 10 veering northwest 5 to 7, then veering southeast 7 to severe gale 9 later.","main":"Fair Isle","sub":{}}},{"all":"Faeroes, Southeast Iceland","wind":"Northerly or northwesterly veering southeasterly later, 6 to gale 8, occasionally severe gale 9 later.","seastate":"Very rough or high.","visibility":"Good, occasionally poor","weather":"Squally wintry showers.","area":[{"seastate":"Very rough or high.","visibility":"Good, occasionally poor.","weather":"Squally wintry showers.","wind":"Northerly or northwesterly veering southeasterly later, 6 to gale 8, occasionally severe gale 9 later.","main":"Faeroes","sub":{}},{"seastate":"Very rough or high.","visibility":"Good, occasionally poor.","weather":"Squally wintry showers.","wind":"Northerly or northwesterly veering southeasterly later, 6 to gale 8, occasionally severe gale 9 later.","main":"Southeast Iceland","sub":{}}]},{"all":"Trafalgar","wind":"In southeast, cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.  In northwest, southerly or southwesterly 5 or 6, occasionally 7 later.","seastate":"In southeast, moderate or rough.  in northwest, rough or very rough.","visibility":"Good, occasionally poor.","weather":"In southeast, mainly fair.  In northwest, occasional rain.","area":{"issuedate":"2015-12-05","issuetime":"2315","seastate":"In southeast, moderate or rough.  in northwest, rough or very rough.","visibility":"Good, occasionally poor.","weather":"In southeast, mainly fair.  In northwest, occasional rain.","wind":"In southeast, cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.  In northwest, southerly or southwesterly 5 or 6, occasionally 7 later.","main":"Trafalgar","sub":{}}}]}}};
+var obj4 = {"report":{"xmlns:xsi":"http://www.w3.org/2001/XMLSchema-instance","creation-time":"2015-12-06T16:35:00","title":"Shipping forecast","issue":{"date":"2015-12-06","time":"1625"},"gales":{"shipping-area":["Viking","North Utsire","South Utsire","Forties","Cromarty","Fisher","German Bight","Humber","Thames","Dover","Trafalgar","Fitzroy","Sole","Lundy","Fastnet","Irish Sea","Shannon","Rockall","Malin","Hebrides","Bailey","Fair Isle","Faeroes","Southeast Iceland"]},"general-synopsis":{"valid":{"time":"midday"},"gs-text":"Low mid Atlantic 994 expected 250 miles west of Rockall 959 by midday tomorrow. Low Norwegian Sea 965 losing its identity"},"area-forecasts":{"period":"24","total-num":"12","area-forecast":[{"all":"Viking, North Utsire, South Utsire, Forties, Cromarty","wind":"Westerly 7 to severe gale 9 veering northwesterly 5 to 7, then veering southeasterly later.","seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good","weather":"Showers at first.","area":[{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good.","weather":"Showers at first.","wind":"Westerly 7 to severe gale 9 veering northwesterly 5 to 7, then veering southeasterly later.","main":"Viking","sub":{}},{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good.","weather":"Showers at first.","wind":"Westerly 7 to severe gale 9 veering northwesterly 5 to 7, then veering southeasterly later.","main":"North Utsire","sub":{}},{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good.","weather":"Showers at first.","wind":"Westerly 7 to severe gale 9 veering northwesterly 5 to 7, then veering southeasterly later.","main":"South Utsire","sub":{}},{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good.","weather":"Showers at first.","wind":"Westerly 7 to severe gale 9 veering northwesterly 5 to 7, then veering southeasterly later.","main":"Forties","sub":{}},{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good.","weather":"Showers at first.","wind":"Westerly 7 to severe gale 9 veering northwesterly 5 to 7, then veering southeasterly later.","main":"Cromarty","sub":{}}]},{"all":"Forth, Tyne, Dogger","wind":"West backing southeast later, 5 to 7.","seastate":"Moderate or rough.","visibility":"Good, occasionally poor later","weather":"Rain later.","area":[{"seastate":"Moderate or rough.","visibility":"Good, occasionally poor later.","weather":"Rain later.","wind":"West backing southeast later, 5 to 7.","main":"Forth","sub":{}},{"seastate":"Moderate or rough.","visibility":"Good, occasionally poor later.","weather":"Rain later.","wind":"West backing southeast later, 5 to 7.","main":"Tyne","sub":{}},{"seastate":"Moderate or rough.","visibility":"Good, occasionally poor later.","weather":"Rain later.","wind":"West backing southeast later, 5 to 7.","main":"Dogger","sub":{}}]},{"all":"Fisher","wind":"West 7 to severe gale 9, decreasing 4 or 5, backing southeast later.","seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good","weather":"Showers.","area":{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good.","weather":"Showers.","wind":"West 7 to severe gale 9, decreasing 4 or 5, backing southeast later.","main":"Fisher","sub":{}}},{"all":"German Bight, Humber","wind":"West 5 to 7, occasionally gale 8 at first, backing south or southeast 4 or 5.","seastate":"Moderate or rough, becoming slight or moderate.","visibility":"Moderate or good, occasionally very poor","weather":"Occasional rain, fog patches.","area":[{"seastate":"Moderate or rough, becoming slight or moderate.","visibility":"Moderate or good, occasionally very poor.","weather":"Occasional rain, fog patches.","wind":"West 5 to 7, occasionally gale 8 at first, backing south or southeast 4 or 5.","main":"German Bight","sub":{}},{"seastate":"Moderate or rough, becoming slight or moderate.","visibility":"Moderate or good, occasionally very poor.","weather":"Occasional rain, fog patches.","wind":"West 5 to 7, occasionally gale 8 at first, backing south or southeast 4 or 5.","main":"Humber","sub":{}}]},{"all":"Thames, Dover, Wight, Portland","wind":"Southwest backing south 5 to 7.","seastate":"Moderate or rough.","visibility":"Good, occasionally poor","weather":"Occasional drizzle.","area":[{"seastate":"Moderate or rough.","visibility":"Good, occasionally poor.","weather":"Occasional drizzle.","wind":"Southwest backing south 5 to 7.","main":"Thames","sub":{}},{"seastate":"Moderate or rough.","visibility":"Good, occasionally poor.","weather":"Occasional drizzle.","wind":"Southwest backing south 5 to 7.","main":"Dover","sub":{}},{"seastate":"Moderate or rough.","visibility":"Good, occasionally poor.","weather":"Occasional drizzle.","wind":"Southwest backing south 5 to 7.","main":"Wight","sub":{}},{"seastate":"Moderate or rough.","visibility":"Good, occasionally poor.","weather":"Occasional drizzle.","wind":"Southwest backing south 5 to 7.","main":"Portland","sub":{}}]},{"all":"Plymouth, Biscay","wind":"South 5 to 7.","seastate":"Rough or very rough.","visibility":"Good, occasionally poor","weather":"Occasional drizzle.","area":[{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional drizzle.","wind":"South 5 to 7.","main":"Plymouth","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional drizzle.","wind":"South 5 to 7.","main":"Biscay","sub":{}}]},{"all":"Fitzroy, Sole","wind":"South 6 to gale 8, occasionally severe gale 9.","seastate":"Very rough or high.","visibility":"Moderate or poor","weather":"Occasional rain.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"South 6 to gale 8, occasionally severe gale 9.","main":"Fitzroy","sub":{}},{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Occasional rain.","wind":"South 6 to gale 8, occasionally severe gale 9.","main":"Sole","sub":{}}]},{"all":"Lundy, Fastnet, Irish Sea","wind":"Cyclonic 5 or 6, becoming south 6 to gale 8, occasionally severe gale 9 later.","seastate":"Rough or very rough, occasionally high in Fastnet.","visibility":"Good, occasionally poor","weather":"Occasional rain.","area":[{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Cyclonic 5 or 6, becoming south 6 to gale 8, occasionally severe gale 9 later.","main":"Lundy","sub":{}},{"seastate":"Rough or very rough, occasionally high.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Cyclonic 5 or 6, becoming south 6 to gale 8, occasionally severe gale 9 later.","main":"Fastnet","sub":{}},{"seastate":"Rough or very rough.","visibility":"Good, occasionally poor.","weather":"Occasional rain.","wind":"Cyclonic 5 or 6, becoming south 6 to gale 8, occasionally severe gale 9 later.","main":"Irish Sea","sub":{}}]},{"all":"Shannon, South Rockall","wind":"Southeasterly 7 to severe gale 9, veering southerly gale 8 to storm 10.","seastate":"Very rough or high.","visibility":"Moderate or poor","weather":"Rain.","area":[{"seastate":"Very rough or high.","visibility":"Moderate or poor.","weather":"Rain.","wind":"Southeasterly 7 to severe gale 9, veering southerly gale 8 to storm 10.","main":"Shannon","sub":{}},{"seastate":"In south, very rough or high.  in north, very rough or high, occasionally very high later.","visibility":"In south, moderate or poor.  In north, good, becoming moderate or poor.","weather":"In south, rain.  In north, showers then rain.","wind":"In south, southeasterly 7 to severe gale 9, veering southerly gale 8 to storm 10.  In north, northwesterly 5 to 7, becoming variable 4, then southeasterly 7 to severe gale 9, occasionally storm 10.","main":"Rockall","sub":{}}]},{"all":"North Rockall, Malin, Hebrides, Bailey","wind":"Northwesterly 5 to 7, becoming variable 4, then southeasterly 7 to severe gale 9, occasionally storm 10 in north Rockall and Bailey.","seastate":"Very rough or high, occasionally very high later in north Rockall and Bailey.","visibility":"Good, becoming moderate or poor","weather":"Showers then rain.","area":[{"seastate":"In south, very rough or high.  in north, very rough or high, occasionally very high later.","visibility":"In south, moderate or poor.  In north, good, becoming moderate or poor.","weather":"In south, rain.  In north, showers then rain.","wind":"In south, southeasterly 7 to severe gale 9, veering southerly gale 8 to storm 10.  In north, northwesterly 5 to 7, becoming variable 4, then southeasterly 7 to severe gale 9, occasionally storm 10.","main":"Rockall","sub":{}},{"seastate":"Very rough or high.","visibility":"Good, becoming moderate or poor.","weather":"Showers then rain.","wind":"Northwesterly 5 to 7, becoming variable 4, then southeasterly 7 to severe gale 9.","main":"Malin","sub":{}},{"seastate":"Very rough or high.","visibility":"Good, becoming moderate or poor.","weather":"Showers then rain.","wind":"Northwesterly 5 to 7, becoming variable 4, then southeasterly 7 to severe gale 9.","main":"Hebrides","sub":{}},{"seastate":"Very rough or high, occasionally very high later.","visibility":"Good, becoming moderate or poor.","weather":"Showers then rain.","wind":"Northwesterly 5 to 7, becoming variable 4, then southeasterly 7 to severe gale 9, occasionally storm 10.","main":"Bailey","sub":{}}]},{"all":"Fair Isle","wind":"Northwest veering southeast 7 to severe gale 9, decreasing 4 or 5 for a time.","seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good, occasionally poor later","weather":"Showers, rain later.","area":{"seastate":"Very rough or high, becoming rough or very rough.","visibility":"Good, occasionally poor later.","weather":"Showers, rain later.","wind":"Northwest veering southeast 7 to severe gale 9, decreasing 4 or 5 for a time.","main":"Fair Isle","sub":{}}},{"all":"Faeroes, Southeast Iceland","wind":"Northwesterly veering easterly or southeasterly 5 to 7, increasing gale 8 to storm 10, occasionally violent storm 11 later in Southeast Iceland.","seastate":"Very rough or high.","visibility":"Good becoming moderate or poor later","weather":"Wintry showers, rain later.","area":[{"seastate":"Very rough or high.","visibility":"Good becoming moderate or poor later.","weather":"Wintry showers, rain later.","wind":"Northwesterly veering easterly or southeasterly 5 to 7, increasing gale 8 to storm 10.","main":"Faeroes","sub":{}},{"seastate":"Very rough or high.","visibility":"Good becoming moderate or poor later.","weather":"Wintry showers, rain later.","wind":"Northwesterly veering easterly or southeasterly 5 to 7, increasing gale 8 to storm 10, occasionally violent storm 11 later.","main":"Southeast Iceland","sub":{}}]},{"all":"Trafalgar","wind":"In southeast, cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.  In northwest, southerly or southwesterly 5 or 6, occasionally 7 later.","seastate":"In southeast, moderate or rough.  in northwest, rough or very rough.","visibility":"Good, occasionally poor.","weather":"In southeast, mainly fair.  In northwest, occasional rain.","area":{"issuedate":"2015-12-05","issuetime":"2315","seastate":"In southeast, moderate or rough.  in northwest, rough or very rough.","visibility":"Good, occasionally poor.","weather":"In southeast, mainly fair.  In northwest, occasional rain.","wind":"In southeast, cyclonic, mainly easterly, 4 or 5, occasionally 6 in east.  In northwest, southerly or southwesterly 5 or 6, occasionally 7 later.","main":"Trafalgar","sub":{}}}]}}};
+
+var obj1Array = [];
+var obj2Array = [];
+var obj3Array = [];
+var obj4Array = [];
+
+function parseJSON(obj, storeArray) {
+  var objArray = obj.report["area-forecasts"]["area-forecast"];
+  var date = obj.report.issue.date;
+  var time = obj.report.issue.time;
+  storeArray.push([date, time]);
+  for (i = 0; i < objArray.length; i++) {
+    if(objArray[i].area.length != undefined) { //more than one
+      for(j = 0; j < objArray[i].area.length; j++) {
+        var place = objArray[i].area[j].main;
+        var wind = objArray[i].area[j].wind;
+        var seastate = objArray[i].area[j].seastate;
+        var weather = objArray[i].area[j].weather;
+        var visibility = objArray[i].area[j].visibility;
+        storeArray.push([place, wind, seastate, weather, visibility]);
+      }
+    } else {
+      var place = objArray[i].area.main;
+      var wind = objArray[i].area.wind;
+      var seastate = objArray[i].area.seastate;
+      var weather = objArray[i].area.weather;
+      var visibility = objArray[i].area.visibility;
+      storeArray.push([place, wind, seastate, weather, visibility]);
+    }
+  }
+}
+
+parseJSON(obj1, obj1Array);
+parseJSON(obj2, obj2Array);
+parseJSON(obj3, obj3Array);
+parseJSON(obj4, obj4Array);
+
+forecasts = [obj1Array, obj2Array, obj3Array, obj4Array];
+
+var winds = [];
+var seastates = [];
+var weathers = [];
+var visibilities = [];
+
+function renderText(placeName) {
+  for(i = 0; i < forecasts.length; i++) {
+    for(j = 1; j < forecasts[i].length; j++) { // skip [0], is time and date
+      if(forecasts[i][j][0].search(placeName) === 0) {
+        var date = forecasts[i][0][1]; // skip [0], is time and date
+        var place = forecasts[i][j];
+
+        $('#wind').prepend('<span>' + place[0] + '\;&nbsp;</span>');
+        $('#seastate').prepend('<span>' + place[0] + '\;&nbsp;</span>');
+        $('#weather').prepend('<span>' + place[0] + '\;&nbsp;</span>');
+        $('#visibility').prepend('<span>' + place[0] + '\;&nbsp;</span>');
+
+        var wind = place[1];
+        winds.push(wind);
+        var seastate = place[2];
+        seastates.push(seastate);
+        var weather = place [3];
+        weathers.push(weather);
+        var visibility = place[4];
+        visibilities.push(visibility);
+        $('#wind > ul').append('<li>' + date + '\:&nbsp;' + wind + '</li>');
+        $('#seastate > ul').append('<li>' + date + '\:&nbsp;' + seastate + '</li>');
+        $('#weather > ul').append('<li>' + date + '\:&nbsp;' + weather + '</li>');
+        $('#visibility > ul').append('<li>' + date + '\:&nbsp;' + visibility + '</li>');
+      }
+    }
+  }
+}
+
+function formatPaths(array, hour) {
+  var words = array.cleanupDash().split("-");
+  for(i=0; i<words.length; i++) {
+    var test = parseInt(words[i] || 0);
+    if (test > 0) {
+      words[i] = numberToText(test);
+    }
+    var path = '/audio/broadcast_' + hour + '/' + words[i] + '.mp3';
+    words[i] = path;
+  }
+  return words;
+}
+
+
+var soundsOneWind = [];
+var soundsTwoWind = [];
+var soundsThreeWind = [];
+var soundsFourWind = [];
+
+var soundsOneSeastate = [];
+var soundsTwoSeastate = [];
+var soundsThreeSeastate = [];
+var soundsFourSeastate = [];
+
+var soundsOneWeather = [];
+var soundsTwoWeather = [];
+var soundsThreeWeather = [];
+var soundsFourWeather = [];
+
+var soundsOneVisibility = [];
+var soundsTwoVisibility = [];
+var soundsThreeVisibility = [];
+var soundsFourVisibility = [];
+
+window.onload = function() {
+
+loadWords(formatPaths(winds[0],"1130"), soundsOneWind);
+loadWords(formatPaths(winds[1],"0015"), soundsTwoWind);
+loadWords(formatPaths(winds[2],"1725"), soundsThreeWind);
+loadWords(formatPaths(winds[3],"280015"), soundsFourWind);
+
+loadWords(formatPaths(seastates[0],"1130"), soundsOneSeastate);
+loadWords(formatPaths(seastates[1],"0015"), soundsTwoSeastate);
+loadWords(formatPaths(seastates[2],"1725"), soundsThreeSeastate);
+loadWords(formatPaths(seastates[3],"280015"), soundsFourSeastate);
+
+loadWords(formatPaths(weathers[0],"1130"), soundsOneWeather);
+loadWords(formatPaths(weathers[1],"0015"), soundsTwoWeather);
+loadWords(formatPaths(weathers[2],"1725"), soundsThreeWeather);
+loadWords(formatPaths(weathers[3],"280015"), soundsFourWeather);
+
+loadWords(formatPaths(visibilities[0],"1130"), soundsOneVisibility);
+loadWords(formatPaths(visibilities[1],"0015"), soundsTwoVisibility);
+loadWords(formatPaths(visibilities[2],"1725"), soundsThreeVisibility);
+loadWords(formatPaths(visibilities[3],"280015"), soundsFourVisibility);
+
+document.getElementById('wind-link').onclick = playWind;
+document.getElementById('seastate-link').onclick = playSeastate;
+document.getElementById('weather-link').onclick = playWeather;
+document.getElementById('visibility-link').onclick = playVisibility;
+
+}
+function playWind() {
+  play(soundsOneWind);
+  play(soundsTwoWind);
+  play(soundsThreeWind);
+  play(soundsFourWind);
+}
+function playSeastate() {
+  play(soundsOneSeastate);
+  play(soundsTwoSeastate);
+  play(soundsThreeSeastate);
+  play(soundsFourSeastate);
+}
+function playWeather() {
+  play(soundsOneWeather);
+  play(soundsTwoWeather);
+  play(soundsThreeWeather);
+  play(soundsFourWeather);
+}
+function playVisibility() {
+  play(soundsOneVisibility);
+  play(soundsTwoVisibility);
+  play(soundsThreeVisibility);
+  play(soundsFourVisibility);
+}
+
+
+
+
+function play(soundArray) {
+  var index = 0;
+  if(soundArray[index].buffer != null) {
+    soundArray[index].play();
+    soundArray[index].onended(playNext);
+    index++;
+  } else {
+    index++;
+    playNext();
+  }
+  function playNext() {
+    if(index < soundArray.length) {
+      if(soundArray[index].buffer != null) {
+        soundArray[index].play();
+        soundArray[index].onended(playNext);
+        index++;
+      } else {
+        index++;
+        playNext();
+      }
+    }
+  }
+}
+
+function loadWords(wordsArray, soundsArray) {
+	for(i = 0; i < wordsArray.length; i++) {
+		soundsArray.push(loadSound(wordsArray[i],addToCounter,addToCounter));
+	}
+}
+
+function addToCounter() {
+
+}
+
+// function load(array) {
+//   var loadArray = [];
+//   for(i = 0; i < array.length; i++) {
+//     if(i === 0) {
+//       var string = array[i].split(" "); // get array of words
+//       for(i = 0; i < string.length; i ++) {
+//         var word = string[i] = string[i].cleanup(); // remove commas periods etc
+//         var test = parseInt(word || 0);
+//         if (test > 0) {
+//           word = numberToText(test);
+//         }
+//         var loadArray.push(createPath('1130', word));
+//       }
+//       return loadArray;
+//     }
+//   }
+// }
+
+function loadSentence (string) {
+  string = string.split(" "); // get array of words
+  for(i = 0; i < string.length; i ++) {
+    var word = string[i] = string[i].cleanup(); // remove commas periods etc
+    var test = parseInt(word || 0);
+    if (test > 0) {
+      word = numberToText(test);
+    }
+    wordsArray.push(createPath)
+  }
+	wordsOne = [];
+	wordsTwo = [];
+	wordsThree = [];
+	soundsArrayOne = [];
+	soundsArrayTwo = [];
+	soundsArrayThree = [];
+	for(i = sentenceIndex; i < sentenceIndex + 1; i++) {
+		for(j = 0; j < fS[i].length; j++) {
+			var thisWord = (fS[i][j].cleanup());
+			var test = parseInt(thisWord || 0);
+			if (test > 0) {
+				thisWord = numberToText(test);
+			}
+			wordsOne.push(createPath('1130', thisWord));
+			wordsTwo.push(createPath('1725', thisWord));
+			wordsThree.push(createPath('0015', thisWord));
+		}
+	}
+	loadWords(wordsOne, soundsArrayOne);
+	loadWords(wordsTwo, soundsArrayTwo);
+	loadWords(wordsThree, soundsArrayThree);
+}
+
+function createPath(hour, word) {
+	var path = '/audio/broadcast_' + hour + '/' + word + '.mp3';
+	return path;
+}
+
+renderText("Malin");
+
+</script>
+</body>
+</html>
