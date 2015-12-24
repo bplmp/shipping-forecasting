@@ -37,6 +37,12 @@
     width: 250px;
 }
 
+#sidebar-wrapper.toggled {
+    width: 250px;
+    padding-left: 250px;
+    background: transparent;
+}
+
 #page-content-wrapper {
     width: 100%;
     position: absolute;
@@ -100,7 +106,7 @@
     background: none;
 }
 
-@media(min-width:768px) {
+@media(min-width:990px) {
     #wrapper {
         padding-left: 250px;
     }

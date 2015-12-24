@@ -1,303 +1,42 @@
 <html>
 <head>
 	<script src="/assets/p5.js"></script>
-	<!-- <script src="/assets/p5.speech.js"></script> -->
 	<script src="/assets/p5.sound.js"></script>
+	<!-- <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'> -->
 	<script src="/assets/jquery-1.11.3.min.js"></script>
 	<script src="/assets/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="/assets/bootstrap.css" media="screen" title="no title" charset="utf-8">
-	<script src="/assets/awesomplete.js"></script>
-	<script src="/assets/jquery.scrollTo.min.js"></script>
+	<!-- <script src="/assets/jquery.scrollTo.min.js"></script> -->
 	<script src="/assets/chosen.jquery.min.js"></script>
 	<script src="/assets/chosen.order.jquery.min.js"></script>
-	<link rel="stylesheet" href="/assets/awesomplete.css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/assets/chosen.css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/assets/simple-sidebar.css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/assets/custom-haiku.css" media="screen" title="no title" charset="utf-8">
-	<script>
-	window.onload = function() {
-		var thisUrl = window.location.href;
-		if (thisUrl.indexOf('?') != -1) {
-			var hash = window.location.href.split('?');
-			hash = hash[hash.length -1];
-			var loadedHaiku;
-			$.getJSON ( '/haiku/' + hash, function(data) {
-				loadedHaiku = data;
-				var lineOne = loadedHaiku[0];
-				var lineTwo = loadedHaiku[1];
-				var lineThree = loadedHaiku[2];
-				$('#selectOne').val(lineOne);
-				$('#selectOne').trigger("chosen:updated");
-				$('#selectTwo').val(lineTwo);
-				$('#selectTwo').trigger("chosen:updated");
-				$('#selectThree').val(lineThree);
-				$('#selectThree').trigger("chosen:updated");
-			});
-		}
+	<script type="text/javascript">
+	<!--
+	if (screen.width <= 699) {
+	document.location = "/haiku-mobile.html";
 	}
-
-	var folders;
-	var b1,
-			b2,
-			b3;
-	var broadcasts = [];
-	var all = [];
-
-	var sounds = [];
-	var forecastSounds = [];
-
-	function setup()
-	{
-		noCanvas();
-	}
-
-	function speakOne(word) {
-		var initialPath = '/audio/'
-		var path = initialPath + word + '.mp3';
-		var thisWord = loadSound(path, playOne);
-	}
-
-	function playOne(thisWord) {
-		thisWord.play();
-	}
-
-function preload() {
-	b1 = loadStrings("broadcast_0015_list.txt", loadFilesB1);
-	b2 = loadStrings("broadcast_1130_list.txt", loadFilesB2);
-	b3 = loadStrings("broadcast_1725_list.txt", loadFilesB3);
-}
-var b1Load = false;
-var b2Load = false;
-var b3Load = false;
-
-function loadFilesB1(folderFiles) {
-	b1Load = true;
-}
-function loadFilesB2(folderFiles) {
-	b2Load = true;
-}
-function loadFilesB3(folderFiles) {
-	b3Load = true;
-	while(b1Load === true && b2Load === true) {
-		b1 = populateList(b1, "0015");
-		b2 = populateList(b2, "1130");
-		b3 = populateList(b3, "1725");
-		all = b1.concat(b2, b3);
-		populateSidebar(all);
-		b1Load = false;
-		b2Load = false;
-		b3Load = false;
-	}
-}
-
-//http://stackoverflow.com/questions/16096872/how-to-sort-2-dimensional-array-by-column-value
-function sortFunction(a, b) {
-    if (a[0] === b[0]) {
-        return 0;
-    }
-    else {
-        return (a[0] < b[0]) ? -1 : 1;
-    }
-}
-
-// function arrayToObj(array) {
-// 	var obj = array.reduce(function(o, v, i) {
-// 		o[i] = v;
-// 		return o;
-// 	}, {});
-// 	return obj;
-// }
-
-	function populateList(files, filePath) {
-		files = files[0].split(",");
-		// files.shift();
-		for(i=0; i<files.length; i++) {
-			if(files[i].search("\_") === -1 && files[i].search("\]") === -1) { //remove files that have _ or ]
-				files[i] = files[i].split(".")[0];
-				files[i] = [files[i], filePath];
-			} else {
-				// removing files
-				files.splice(i,1);
-				// remember to reverse iterate! (subtract one from i because array has jsut shifted with splice)
-				// http://stackoverflow.com/questions/9882284/looping-through-array-and-removing-items-without-breaking-for-loop
-				i--;
-			}
-		}
-		return files;
-	}
-
-		// http://stackoverflow.com/questions/16096872/how-to-sort-2-dimensional-array-by-column-value
-		function sortByFirstColumn(a, b) {
-			if (a[0] === b[0]) {
-				return 0;
-			}
-			else {
-				return (a[0] < b[0]) ? -1 : 1;
-			}
-		}
-
-		function populateSidebar(array) {
-			array.sort(sortByFirstColumn);
-			for(i=0; i<array.length; i++) {
-				$('.sidebar-nav').append('<li class="words-link">' +
-				'<a href="#" id="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' +
-				'<input type="checkbox" class="audiobox" name="' + array[i][0] + '" value="broadcast_' + array[i][1] + "\/" + array[i][0] + '">&nbsp;' +
-					array[i][0] + '</a>' +
-				'</li>')
-
-				$('#selectOne').append('<option value="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' + array[i][0] + '</option>');
-				$('#selectTwo').append('<option value="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' + array[i][0] + '</option>');
-				$('#selectThree').append('<option value="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' + array[i][0] + '</option>');
-
-			}
-			$('.words-link a').click(function(){
-				var soundPath = $(this).attr('id');
-				//scroll to clicked
-				// $('#sidebar-wrapper').scrollTo($('a[id*="broadcast_1130/agency"]'),500);
-				// $('#sidebar-wrapper').scrollTo($(this),500);
-				speakOne(soundPath);
-			});
-			$('.site-wrapper').fadeIn(1500);
-			$('#selectOne').chosen({
-				max_selected_options: 7
-			});
-			$('#selectTwo').chosen();
-			$('#selectThree').chosen();
-		}
-
-		$('#haiku-body').fadeIn(1500);
-
-
-	function getInputs() {
-		var one = ($('#selectOne').val());
-		var two = ($('#selectTwo').val());
-		var three = ($('#selectThree').val());
-		var storedHaiku = [];
-		storedHaiku.push(one);
-		storedHaiku.push(two);
-		storedHaiku.push(three);
-		return storedHaiku;
-	}
-
-	function listenSelected() {
-		$('input:checkbox.audiobox').each(function () {
-			if(this.checked) {
-				speakOne($(this).val());
-				// $(this).attr('checked', false);
-			};
-		});
-	}
-
-	function resetCheckboxes() {
-		$('input:checkbox.audiobox').each(function () {
-			if(this.checked) {
-				$(this).attr('checked', false);
-			};
-		});
-	}
-
-	// var thisHaikuId;
-	var posted = false;
-
-	function createPermalink(id) {
-		// $('#link').append('<p>Done! Check out your haiku <a href=haiku/' + id + '>here</a>.</p>	')
-		$('#link').append('<p>Done! Check out your haiku <a href=?' + id + '>here</a>.</p>	');
-		// $('.custom-list').prepend('<input id="title" data-multiple class="haiku-input title-input" placeholder="title (optional)"/>');
-		$('#link').fadeIn(1500);
-		// $('#title').fadeIn(1500);
-	}
-
-	function arrayToObj(array) {
-		// http://stackoverflow.com/questions/4215737/convert-array-to-object
-		// user Pointy
-		var obj = array.reduce(function(o, v, i) {
-		  o[i] = v;
-		  return o;
-		}, {});
-		var objString = JSON.stringify(obj);
-		return objString;
-	}
-
-	function postData(jsonObj) {
-		if (posted === true) return;
-		$.ajax({
-			type: "POST",
-			url: "/share",
-			data: jsonObj,
-			contentType: "application/json; charset=utf-8",
-			dataType: "json",
-			success: function (data) {
-				var thisHaikuId = data.haikuId;
-				createPermalink(thisHaikuId);
-				posted = true;
-			},
-			failure: function(errMsg) {
-				alert(errMsg);
-			}
-		});
-	}
-
-	function share () {
-		var haiku = getInputs();
-		postData(arrayToObj(haiku));
-	}
-
-
-
+	//-->
 	</script>
 </head>
+
 <body style="overflow:hidden;">
-	<!-- <div class="site-wrapper">
-
-	<div class="site-wrapper-inner">
-
-	<div class="cover-container">
-
-	<div class="masthead clearfix">
-	<div class="inner">
-	<h3 class="masthead-brand">Cover</h3>
-	<nav>
-	<ul class="nav masthead-nav">
-	<li class="active"><a href="#">Home</a></li>
-	<li><a href="#">Features</a></li>
-	<li><a href="#">Contact</a></li>
-</ul>
-</nav>
-</div>
-</div>
-
-<div class="inner cover">
-<ul>
-<li><input id="lineOne" data-multiple class="haiku-input"/></li>
-<li><input id="lineTwo" data-multiple class="haiku-input"/></li>
-<li><input id="lineThree" data-multiple class="haiku-input"/></li>
-</ul>
-</div>
-
-<div class="mastfoot">
-<div class="inner">
-<p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-</div>
-</div>
-
-</div>
-
-</div>
-
-</div> -->
-
 <div class="site-wrapper" style="display:none;">
 
 	<!-- Sidebar -->
 <div id="sidebar-wrapper">
 		<ul class="sidebar-nav">
 				<li class="sidebar-brand" style="height:30px">
-					<button id="listenSelected-btn" type="button" name="button" class="btn icons-button" onclick="listenSelected();" data-original-title="Listen" data-placement="left" data-toggle="tooltip" style="position:fixed; margin-left:160px; margin-top:15px">
+
+					<!-- buttons -->
+					<!-- <button id="listenSelected-btn" type="button" name="button" class="btn icons-button" onclick="listenSelected();" data-original-title="Listen" data-placement="left" data-toggle="tooltip" style="position:fixed; margin-left:160px; margin-top:15px">
 						<span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
 					</button>
 					<button id="remove-btn" type="button" name="button" class="btn icons-button" onclick="resetCheckboxes();" data-original-title="Reset" data-placement="left" data-toggle="tooltip" style="position:fixed; margin-left:160px; margin-top:60px">
 						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-					</button>
+					</button> -->
+
 						<!-- <a href="#">
 								Words
 						</a> -->
@@ -314,12 +53,28 @@ function sortFunction(a, b) {
 		<div class="cover-container">
 
 
+			<div id="alertModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+			  <div class="modal-dialog modal-sm">
+						<div class="alert alert-danger">
+							<strong>Oops!</strong>
+							<p>A haiku must have 3 lines!</p>
+						</div>
+			  </div>
+			</div>
+
+
+			<div id="successModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+			  <div class="modal-dialog modal-sm">
+						<div class="alert alert-success">
+							<strong>Done!</strong>
+							<span id="permalink">Check out your haiku </span>
+						</div>
+			  </div>
+			</div>
+
 
 			<div class="inner cover" id="haiku-body" >
 				<ul class="custom-list">
-					<!-- <li><input id="lineOne" data-multiple class="haiku-input" placeholder="type in your"/></li> -->
-					<!-- <li><input id="lineTwo" data-multiple class="haiku-input" placeholder="shipping forecast inspired"/></li> -->
-					<!-- <li><input id="lineThree" data-multiple class="haiku-input" placeholder="haiku here"/></li> -->
 					<li><select multiple id="selectOne" class="haiku-select" data-placeholder="type in your">
 						<option value></option>
 					</select>
@@ -335,9 +90,12 @@ function sortFunction(a, b) {
 					<span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
 				</button>
 				<span style="float:right;">
-					<button id="info-btn" type="button" name="button" class="btn icons-button" onclick="hello();" data-original-title="Info" data-placement="bottom" data-toggle="tooltip">
+					<!-- <button id="info-btn" type="button" name="button" class="btn icons-button" onclick="hello();" data-original-title="Info" data-placement="bottom" data-toggle="tooltip">
 						<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-					</button>
+					</button> -->
+					<!-- <button id="sidebar-toggle" type="button" name="button" class="btn icons-button" onclick="" data-original-title="List of forecast words" data-placement="bottom" data-toggle="tooltip">
+						<span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span>
+					</button> -->
 					<button id="other-btn" type="button" name="button" class="btn icons-button" onclick="others();" data-original-title="Hear other haiku" data-placement="bottom" data-toggle="tooltip">
 						<span class="glyphicon glyphicon-th" aria-hidden="true"></span>
 					</button>
@@ -352,13 +110,14 @@ function sortFunction(a, b) {
 
 			<div class="mastfoot">
 				<div class="inner">
-					<!-- <p><a href="/about.html">More about</a> the Haiku Forecast, by <a href="https://bernardol.com/">@bernardol</a>.</p> -->
+					<p><a href="http://shipping-forecasting.herokuapp.com">Back</a> to the Shipping Forecaster</p>
 				</div>
 			</div>
 
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	$('button').tooltip();
@@ -435,6 +194,243 @@ function listen () {
 		if(soundFile.buffer != null) {
 				soundFile.play();
 		}
+	}
+}
+
+window.onload = function() {
+	var thisUrl = window.location.href;
+	if (thisUrl.indexOf('?') != -1) {
+		var hash = window.location.href.split('?');
+		hash = hash[hash.length -1];
+		var loadedHaiku;
+		$.getJSON ( '/haiku/' + hash, function(data) {
+			loadedHaiku = data;
+			var lineOne = loadedHaiku[0];
+			var lineTwo = loadedHaiku[1];
+			var lineThree = loadedHaiku[2];
+			$('#selectOne').val(lineOne);
+			$('#selectOne').trigger("chosen:updated");
+			$('#selectTwo').val(lineTwo);
+			$('#selectTwo').trigger("chosen:updated");
+			$('#selectThree').val(lineThree);
+			$('#selectThree').trigger("chosen:updated");
+		});
+	}
+
+	$("#sidebar-toggle").click(function(e) {
+		e.preventDefault();
+		$("#sidebar-wrapper").toggleClass("toggled");
+	});
+}
+
+var b1,
+		b2,
+		b3;
+
+function setup()
+{
+	noCanvas();
+}
+
+function speakOne(word) {
+	var initialPath = '/audio/'
+	var path = initialPath + word + '.mp3';
+	var thisWord = loadSound(path, playOne);
+}
+
+function playOne(thisWord) {
+	thisWord.play();
+}
+
+function preload() {
+b1 = loadStrings("broadcast_0015_list.txt", loadFilesB1);
+b2 = loadStrings("broadcast_1130_list.txt", loadFilesB2);
+b3 = loadStrings("broadcast_1725_list.txt", loadFilesB3);
+}
+
+var b1Load = false;
+var b2Load = false;
+var b3Load = false;
+
+function loadFilesB1(folderFiles) {
+b1Load = true;
+}
+function loadFilesB2(folderFiles) {
+b2Load = true;
+}
+function loadFilesB3(folderFiles) {
+b3Load = true;
+while(b1Load === true && b2Load === true) {
+	b1 = populateList(b1, "0015");
+	b2 = populateList(b2, "1130");
+	b3 = populateList(b3, "1725");
+	var all = b1.concat(b2, b3);
+	populateSidebar(all);
+	b1Load = false;
+	b2Load = false;
+	b3Load = false;
+}
+}
+
+//http://stackoverflow.com/questions/16096872/how-to-sort-2-dimensional-array-by-column-value
+function sortFunction(a, b) {
+	if (a[0] === b[0]) {
+			return 0;
+	}
+	else {
+			return (a[0] < b[0]) ? -1 : 1;
+	}
+}
+
+function populateList(files, filePath) {
+	files = files[0].split(",");
+	// files.shift();
+	for(i=0; i<files.length; i++) {
+		if(files[i].search("\_") === -1 && files[i].search("\]") === -1) { //remove files that have _ or ]
+			files[i] = files[i].split(".")[0];
+			files[i] = [files[i], filePath];
+		} else {
+			// removing files
+			files.splice(i,1);
+			// remember to reverse iterate! (subtract one from i because array has jsut shifted with splice)
+			// http://stackoverflow.com/questions/9882284/looping-through-array-and-removing-items-without-breaking-for-loop
+			i--;
+		}
+	}
+	return files;
+}
+
+	// http://stackoverflow.com/questions/16096872/how-to-sort-2-dimensional-array-by-column-value
+	function sortByFirstColumn(a, b) {
+		if (a[0] === b[0]) {
+			return 0;
+		}
+		else {
+			return (a[0] < b[0]) ? -1 : 1;
+		}
+	}
+
+	function populateSidebar(array) {
+		array.sort(sortByFirstColumn);
+		for(i=0; i<array.length; i++) {
+			// $('.sidebar-nav').append('<li class="words-link">' +
+			// '<a href="#" id="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' +
+			// '<input type="checkbox" class="audiobox" name="' + array[i][0] + '" value="broadcast_' + array[i][1] + "\/" + array[i][0] + '">&nbsp;' +
+			// 	array[i][0] + '</a>' +
+			// '</li>')
+
+			// no checkbox
+			$('.sidebar-nav').append('<li class="words-link">' +
+			'<a href="#" id="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' +
+				array[i][0] + '</a>' +
+			'</li>')
+
+			$('#selectOne').append('<option value="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' + array[i][0] + '</option>');
+			$('#selectTwo').append('<option value="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' + array[i][0] + '</option>');
+			$('#selectThree').append('<option value="broadcast_' + array[i][1] + "\/" + array[i][0] + '">' + array[i][0] + '</option>');
+
+		}
+		$('.words-link a').click(function(){
+			var soundPath = $(this).attr('id');
+			// //scroll to clicked
+			// $('#sidebar-wrapper').scrollTo($(this),500, {
+			// 	offset: -(windowHeight/2)
+			// });
+			speakOne(soundPath);
+		});
+		$('.site-wrapper').fadeIn(1500);
+		$('#selectOne').chosen({
+			max_selected_options: 7,
+			width: '100%'
+		});
+		$('#selectTwo').chosen({
+			max_selected_options: 7,
+			width: '100%'
+		});
+		$('#selectThree').chosen({
+			max_selected_options: 7,
+			width: '100%'
+		});
+	}
+
+function getInputs() {
+	var one = ($('#selectOne').val());
+	var two = ($('#selectTwo').val());
+	var three = ($('#selectThree').val());
+	var storedHaiku = [];
+	storedHaiku.push(one);
+	storedHaiku.push(two);
+	storedHaiku.push(three);
+	return storedHaiku;
+}
+
+function listenSelected() {
+	$('input:checkbox.audiobox').each(function () {
+		if(this.checked) {
+			speakOne($(this).val());
+			// $(this).attr('checked', false);
+		};
+	});
+}
+
+function resetCheckboxes() {
+	$('input:checkbox.audiobox').each(function () {
+		if(this.checked) {
+			$(this).attr('checked', false);
+		};
+	});
+}
+
+var posted = false;
+
+function createPermalink(id) {
+	// // modal option
+	// $('#successModal').modal('show');
+	// $('#permalink').append('<span><a href=?' + id + '>here</a>.</span>');
+	$('#link').append('<p>Done! Check out your haiku <a href=?' + id + '>here</a>.</p>	');
+	$('#link').fadeIn(1500);
+	// // title
+	// $('.custom-list').prepend('<input id="title" data-multiple class="haiku-input title-input" placeholder="title (optional)"/>');
+	// $('#title').fadeIn(1500);
+}
+
+function arrayToObj(array) {
+	// http://stackoverflow.com/questions/4215737/convert-array-to-object
+	// user Pointy
+	var obj = array.reduce(function(o, v, i) {
+		o[i] = v;
+		return o;
+	}, {});
+	var objString = JSON.stringify(obj);
+	return objString;
+}
+
+function postData(jsonObj) {
+	if (posted === true) return;
+	$.ajax({
+		type: "POST",
+		url: "/share",
+		data: jsonObj,
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function (data) {
+			var thisHaikuId = data.haikuId;
+			createPermalink(thisHaikuId);
+			posted = true;
+		},
+		failure: function(errMsg) {
+			alert(errMsg);
+		}
+	});
+}
+
+function share () {
+	var haiku = getInputs();
+	if (haiku[0] === null || haiku[1] === null || haiku[2] === null) {
+		// alert('do the haiku right')
+		$('#alertModal').modal('show');
+	} else {
+		postData(arrayToObj(haiku));
 	}
 }
 

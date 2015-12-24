@@ -2,7 +2,7 @@
   list-style-type: none;
   padding-left: 0;
 }
-
+/*
 .haiku-input {
   font-size: 1.5em;
   width: 100%;
@@ -30,58 +30,12 @@
 .haiku-input:focus {
   border-bottom: 0.1em solid #fff;
   padding-bottom: 0.1em;
-}
+}*/
+
 .haiku-select {
   width: 100%;
-/*
-  font-size: 1.5em;
-  padding: 0;
-  margin: 0;
-  border: 0px solid #ccc;
-  border-radius: 0px;
-  overflow: hidden;
-  background-color: transparent;
-  border-bottom: 0.1em solid #808080;
-  padding-bottom: 0.1em;*/
 }
 
-div.awesomplete {
-  width: 100%;
-  margin-bottom: 1.5em;
-}
-
-/*.icons-button {
-  display: inline-block;
-  padding: 6px 12px;
-  margin-bottom: 0;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857143;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-      touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-
-.icons-button {
-  font-size: 1.5em;
-  color: #808080;
-  background-color: transparent;
-}
-
-
-.icons-button:hover {
-  color: #fff;
-}*/
 
 .icons-button {
   font-size: 1.5em;
@@ -116,9 +70,6 @@ div.awesomplete {
   border-bottom-color: #fff;
 }
 
-.audiobox {
-  /*float:right;*/
-}
 
 
 
@@ -133,11 +84,6 @@ html,
 body {
   height: 100%;
   background-color: #333;
-}
-body {
-  /*color: #fff;*/
-  /*text-align: center;*/
-  /*text-shadow: 0 1px 3px rgba(0,0,0,.5);*/
 }
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -259,7 +205,7 @@ body {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 990px) {
   .masthead,
   .mastfoot,
   .cover-container {
