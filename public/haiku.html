@@ -9,25 +9,31 @@
 	<script src="/assets/awesomplete.js"></script>
 	<script src="/assets/jquery.scrollTo.min.js"></script>
 	<script src="/assets/chosen.jquery.min.js"></script>
+	<script src="/assets/chosen.order.jquery.min.js"></script>
 	<link rel="stylesheet" href="/assets/awesomplete.css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/assets/chosen.css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/assets/simple-sidebar.css" media="screen" title="no title" charset="utf-8">
 	<link rel="stylesheet" href="/assets/custom-haiku.css" media="screen" title="no title" charset="utf-8">
 	<script>
-	var thisUrl = window.location.href;
-	if (thisUrl.indexOf('?') != -1) {
-		var hash = window.location.href.split('?');
-		hash = hash[hash.length -1];
-		var loadedHaiku;
-		$.getJSON ( '/haiku/' + hash, function(data) {
-			loadedHaiku = data;
-			var lineOne = loadedHaiku[0].join(' ');
-			var lineTwo = loadedHaiku[1].join(' ');
-			var lineThree = loadedHaiku[2].join(' ');
-			var one = ($('#lineOne').val(lineOne));
-			var two = ($('#lineTwo').val(lineTwo));
-			var three = ($('#lineThree').val(lineThree));
-		});
+	window.onload = function() {
+		var thisUrl = window.location.href;
+		if (thisUrl.indexOf('?') != -1) {
+			var hash = window.location.href.split('?');
+			hash = hash[hash.length -1];
+			var loadedHaiku;
+			$.getJSON ( '/haiku/' + hash, function(data) {
+				loadedHaiku = data;
+				var lineOne = loadedHaiku[0];
+				var lineTwo = loadedHaiku[1];
+				var lineThree = loadedHaiku[2];
+				$('#selectOne').val(lineOne);
+				$('#selectOne').trigger("chosen:updated");
+				$('#selectTwo').val(lineTwo);
+				$('#selectTwo').trigger("chosen:updated");
+				$('#selectThree').val(lineThree);
+				$('#selectThree').trigger("chosen:updated");
+			});
+		}
 	}
 
 	var folders;
@@ -40,87 +46,9 @@
 	var sounds = [];
 	var forecastSounds = [];
 
-	var index = 1;
-	// var totalWords = 0;
-	var errorCounter = 0;
-	var storedHaiku = [];
-	// var wind = "Fisher, German Bight West, becoming cyclonic 5 to 7, decreasing 3 or 4 for a time Moderate or rough, occasionally very high at first Showers Moderate or good";
-	// var wind = "3 or 4 for a time, but mainly northwest 5 to 7";
-	var wind = "fisher german bight, I lov 3927947 fh3##$sds s d2";
-
-
-
-	// function prepareString() {
-	// 	totalWords = 0;
-	// 	wind = wind.toLowerCase();
-	// 	storedHaiku = wind.split(',');
-	// 	for (i=0; i<storedHaiku.length; i++) {
-	// 		storedHaiku[i] = storedHaiku[i].trim();
-	// 		storedHaiku[i] = storedHaiku[i].split(" ");
-	// 		for (j=0; j<storedHaiku[i].length; j++) {
-	// 			totalWords ++;
-	// 			var test = parseInt(storedHaiku[i][j]) || 0;
-	// 			if (test > 0) {
-	// 				storedHaiku[i][j] = numberToText(test);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// http://stackoverflow.com/questions/1983767/only-keep-a-z-0-9-and-remove-other-characters-from-string-using-javascript
-	String.prototype.cleanup = function() {
-	   return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-");
-	}
-
-	function count(array) {
-		var count = 0;
-		for(i=0; i<array.length; i++) {
-			count += array[i].length;
-		}
-		return count;
-	}
-
-	function prepareString(string) {
-		if(string != undefined) {
-			string = string.cleanup();
-			string = string.split("-");
-			return string;
-		}
-	}
-
-	// storedHaiku.push(prepareString(haiku));
-
-	function storeSound(soundFile) {
-		var text = soundFile.file.split("\/");
-		text = text[2].split(".")[0];
-		soundFile.text = text;
-		forecastSounds.push(soundFile);
-		if(forecastSounds.length === count(storedHaiku) - errorCounter) {
-			console.log("done");
-			forecastSounds[0].play();
-			forecastSounds[0].onended(playNext);
-		}
-	}
-
-	function fileExists(path) {
-		$.get(path)
-		.done(function() {
-			var thisSound = loadSound(path, storeSound);
-		}).fail(function() {
-			errorCounter ++;
-		});
-	}
-
-	function speak() {
-		forecastSounds = [];
-		errorCounter = 0;
-		for (i=0; i<storedHaiku.length; i++) {
-			for (j=0; j<storedHaiku[i].length; j++) {
-				var initialPath = '/audio/'
-				var path = initialPath + storedHaiku[i][j] + '.mp3';
-				fileExists(path);
-			}
-		}
+	function setup()
+	{
+		noCanvas();
 	}
 
 	function speakOne(word) {
@@ -133,25 +61,7 @@
 		thisWord.play();
 	}
 
-// 	function preload() {
-// 		folders = loadStrings("folder_list.txt", loadFiles);
-// 	}
-//
-// 	function loadFiles(foldersToLoad) {
-// 		var folderArray = foldersToLoad[0].split(",");
-// 		for(i=0; i<folderArray.length; i++) {
-// 			var folderFiles = loadStrings(folderArray[i] + "_list.txt", loadFolderFiles);
-// 		}
-// 	}
-//
-// function loadFolderFiles(folderFiles) {
-// 	populateSidebar(populateList(folderFiles));
-// }
-
 function preload() {
-	// b1 = loadStrings("broadcast_0015_list.txt", loadFilesB1);
-	// b2 = loadStrings("broadcast_1130_list.txt", loadFilesB2);
-	// b3 = loadStrings("broadcast_1725_list.txt", loadFilesB3);
 	b1 = loadStrings("broadcast_0015_list.txt", loadFilesB1);
 	b2 = loadStrings("broadcast_1130_list.txt", loadFilesB2);
 	b3 = loadStrings("broadcast_1725_list.txt", loadFilesB3);
@@ -161,15 +71,12 @@ var b2Load = false;
 var b3Load = false;
 
 function loadFilesB1(folderFiles) {
-	// populateSidebar(populateList(folderFiles), "broadcast_0015");
 	b1Load = true;
 }
 function loadFilesB2(folderFiles) {
-	// populateSidebar(populateList(folderFiles), "broadcast_1130");
 	b2Load = true;
 }
 function loadFilesB3(folderFiles) {
-	// populateSidebar(populateList(folderFiles), "broadcast_1725");
 	b3Load = true;
 	while(b1Load === true && b2Load === true) {
 		b1 = populateList(b1, "0015");
@@ -193,85 +100,13 @@ function sortFunction(a, b) {
     }
 }
 
-function arrayToObj(array) {
-	var obj = array.reduce(function(o, v, i) {
-		o[i] = v;
-		return o;
-	}, {});
-	return obj;
-}
-
-	function setup()
-	{
-		noCanvas();
-	}
-
-	function playNext() {
-		forecastSounds[index].play();
-		if(index < forecastSounds.length - 1) {
-			forecastSounds[index].onended(playNext);
-			index++;
-		} else if (index === forecastSounds.length -1) {
-			index = 1;
-		}
-	}
-
-	function numberToText(number) {
-		switch (parseInt(number)) {
-			case 0:
-			return "zero";
-			break;
-			case 1:
-			return "one";
-			break;
-			case 2:
-			return "two";
-			break;
-			case 3:
-			return "three";
-			break;
-			case 4:
-			return "four";
-			break;
-			case 5:
-			return "five";
-			break;
-			case 6:
-			return "six";
-			break;
-			case 7:
-			return "seven";
-			break;
-			case 8:
-			return "eight";
-			break;
-			case 9:
-			return "nine";
-			break;
-			case 10:
-			return "ten";
-			break;
-			default:
-			return;
-		}
-	}
-
-	// function populateList(files) {
-	// 	files = files[0].split(",");
-	// 	// files.shift();
-	// 	for(i=0; i<files.length; i++) {
-	// 		if(files[i].search("\_") === -1 && files[i].search("\]") === -1) { //remove files that have _ or ]
-	// 			files[i] = files[i].split(".")[0];
-	// 		} else {
-	// 			// removing files
-	// 			files.splice(i,1);
-	// 			// remember to reverse iterate! (subtract one from i because array has jsut shifted with splice)
-	// 			// http://stackoverflow.com/questions/9882284/looping-through-array-and-removing-items-without-breaking-for-loop
-	// 			i--;
-	// 		}
-	// 	}
-	// 	return files;
-	// }
+// function arrayToObj(array) {
+// 	var obj = array.reduce(function(o, v, i) {
+// 		o[i] = v;
+// 		return o;
+// 	}, {});
+// 	return obj;
+// }
 
 	function populateList(files, filePath) {
 		files = files[0].split(",");
@@ -290,19 +125,6 @@ function arrayToObj(array) {
 		}
 		return files;
 	}
-
-		// function populateSidebar(array) {
-		// 	for(i=0; i<array.length; i++) {
-		// 		$('.sidebar-nav').append('<li class="words-link">\
-		// 		<a href="#" data-path="' + array[i] + '">' + array[i] + '</a>\
-		// 		</li>')
-		// 		// <input type="checkbox" name="' + array[i] + '" value="' + array[i] + '">\
-		// 	}
-		// 	$('.words-link a').click(function(){
-		// 		var soundPath = $(this).attr('data-path');
-		// 		speakOne(soundPath);
-		// 	});
-		// }
 
 		// http://stackoverflow.com/questions/16096872/how-to-sort-2-dimensional-array-by-column-value
 		function sortByFirstColumn(a, b) {
@@ -343,55 +165,18 @@ function arrayToObj(array) {
 			$('#selectThree').chosen();
 		}
 
-		// populateSidebar(files);
-
-		//another approach to autocomplete: http://harvesthq.github.io/chosen/
-		//create autocomplete dropdown
-		function createAutocomplete (input, files) {
-			var awesomplete = new Awesomplete(input);
-			awesomplete.filter = function(text, input) {
-				return Awesomplete.FILTER_CONTAINS(text, input.match(/[^ ]*$/)[0]);
-			}
-
-			awesomplete.replace = function(text) {
-				var before = this.input.value.match(/^.+ \s*|/)[0];
-				this.input.value = before + text + " ";
-			}
-			awesomplete.minChars = 1;
-			awesomplete.maxItems = 10;
-			awesomplete.list = files;
-		}
-		// var inputs = $("input");
-		// for(i=0; i<inputs.length; i++) {
-		// 	createAutocomplete(inputs[i]);
-		// }
-		//
 		$('#haiku-body').fadeIn(1500);
 
-
-	// function getInputs() {
-	// 	var one = ($('#lineOne').val()).trim();
-	// 	var two = ($('#lineTwo').val()).trim();
-	// 	var three = ($('#lineThree').val()).trim();
-	// 	storedHaiku = [];
-	// 	storedHaiku.push(prepareString(one));
-	// 	storedHaiku.push(prepareString(two));
-	// 	storedHaiku.push(prepareString(three));
-	// }
 
 	function getInputs() {
 		var one = ($('#selectOne').val());
 		var two = ($('#selectTwo').val());
 		var three = ($('#selectThree').val());
-		storedHaiku = [];
+		var storedHaiku = [];
 		storedHaiku.push(one);
 		storedHaiku.push(two);
 		storedHaiku.push(three);
-	}
-
-	function listen() {
-		getInputs();
-		speak();
+		return storedHaiku;
 	}
 
 	function listenSelected() {
@@ -411,7 +196,7 @@ function arrayToObj(array) {
 		});
 	}
 
-	var thisHaikuId;
+	// var thisHaikuId;
 	var posted = false;
 
 	function createPermalink(id) {
@@ -422,7 +207,7 @@ function arrayToObj(array) {
 		// $('#title').fadeIn(1500);
 	}
 
-	function formatData(array) {
+	function arrayToObj(array) {
 		// http://stackoverflow.com/questions/4215737/convert-array-to-object
 		// user Pointy
 		var obj = array.reduce(function(o, v, i) {
@@ -431,29 +216,30 @@ function arrayToObj(array) {
 		}, {});
 		var objString = JSON.stringify(obj);
 		return objString;
-}
+	}
+
 	function postData(jsonObj) {
 		if (posted === true) return;
 		$.ajax({
-		type: "POST",
-		url: "/share",
-		data: jsonObj,
-		contentType: "application/json; charset=utf-8",
-		dataType: "json",
-		success: function (data) {
-		thisHaikuId = data.haikuId;
-		createPermalink(thisHaikuId);
-		posted = true;
-		},
-		failure: function(errMsg) {
+			type: "POST",
+			url: "/share",
+			data: jsonObj,
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			success: function (data) {
+				var thisHaikuId = data.haikuId;
+				createPermalink(thisHaikuId);
+				posted = true;
+			},
+			failure: function(errMsg) {
 				alert(errMsg);
-		}
-	});
+			}
+		});
 	}
 
 	function share () {
-		getInputs();
-		postData(formatData(storedHaiku));
+		var haiku = getInputs();
+		postData(arrayToObj(haiku));
 	}
 
 
@@ -545,7 +331,7 @@ function arrayToObj(array) {
 					</select>
 					</li>
 				</ul>
-				<button id="listen-btn" type="button" name="button" class="btn icons-button" onclick="listen();" data-original-title="Listen" data-placement="bottom" data-toggle="tooltip">
+				<button id="listen-btn" type="button" name="button" class="btn icons-button" onclick="playHaiku();" data-original-title="Listen" data-placement="bottom" data-toggle="tooltip">
 					<span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
 				</button>
 				<span style="float:right;">
@@ -576,7 +362,82 @@ function arrayToObj(array) {
 <script type="text/javascript">
 $(document).ready(function() {
 	$('button').tooltip();
+	$('button').click(function() {
+		$(this).tooltip('hide');
+	});
 });
+
+var storedSounds = [];
+
+function loadWords(wordsArray, soundsArray) {
+	if (soundsArray.length != 0) {
+		soundsArray.length = 0;
+	}
+	for(i = 0; i < wordsArray.length; i++) {
+		var path = 'audio/' + wordsArray[i] + '.mp3';
+		soundsArray.push(loadSound(path,addToCounter,addToCounter));
+	}
+}
+
+var loadingCounter = 0;
+function addToCounter() {
+	loadingCounter++;
+	if(getHaiku().length === loadingCounter) {
+		console.log('loaded');
+		loadingCounter = 0;
+		listen();
+	}
+}
+
+function getHaiku() {
+	var one = ($('#selectOne').getSelectionOrder());
+	var two = ($('#selectTwo').getSelectionOrder());
+	var three = ($('#selectThree').getSelectionOrder());
+	var arr = one.concat(two, three);
+	return arr;
+}
+
+function playHaiku() {
+	loadingCounter = 0;
+	var haiku = getHaiku();
+	loadWords(haiku,storedSounds);
+}
+
+function listen () {
+	playSentence();
+
+	function playSentence() {
+		var index = 0;
+		if(storedSounds[index].buffer != null) {
+			storedSounds[index].play();
+			storedSounds[index].onended(playNextWord);
+		} else {
+			playNextWord();
+		}
+
+		function playNextWord() {
+			var max = storedSounds.length - 1;
+
+			if(index < max) {
+				index++;
+				if(storedSounds[index].buffer === null) {
+					playNextWord()
+				} else {
+					storedSounds[index].play();
+					storedSounds[index].onended(playNextWord);
+
+				}
+			}
+		}
+	}
+
+	function playSound(soundFile, voiceId, index) {
+		if(soundFile.buffer != null) {
+				soundFile.play();
+		}
+	}
+}
+
 </script>
 </body>
 </html>

@@ -79,6 +79,7 @@ div.awesomplete {
 }
 
 .icons-button {
+  display: inline-block !important;
   font-size: 1.5em;
   color: #808080;
   background-color: transparent;
@@ -86,10 +87,6 @@ div.awesomplete {
 
 .icons-button:hover {
   color: #fff;
-}
-
-.icons-button:focus {
-
 }
 
 /* Tooltip */
