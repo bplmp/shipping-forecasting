@@ -197,32 +197,6 @@ function listen () {
 	}
 }
 
-window.onload = function() {
-	var thisUrl = window.location.href;
-	if (thisUrl.indexOf('?') != -1) {
-		var hash = window.location.href.split('?');
-		hash = hash[hash.length -1];
-		var loadedHaiku;
-		$.getJSON ( '/haiku/' + hash, function(data) {
-			loadedHaiku = data;
-			var lineOne = loadedHaiku[0];
-			var lineTwo = loadedHaiku[1];
-			var lineThree = loadedHaiku[2];
-			$('#selectOne').val(lineOne);
-			$('#selectOne').trigger("chosen:updated");
-			$('#selectTwo').val(lineTwo);
-			$('#selectTwo').trigger("chosen:updated");
-			$('#selectThree').val(lineThree);
-			$('#selectThree').trigger("chosen:updated");
-		});
-	}
-
-	$("#sidebar-toggle").click(function(e) {
-		e.preventDefault();
-		$("#sidebar-wrapper").toggleClass("toggled");
-	});
-}
-
 var b1,
 		b2,
 		b3;
@@ -350,6 +324,31 @@ function populateList(files, filePath) {
 		$('#selectThree').chosen({
 			max_selected_options: 7,
 			width: '100%'
+		});
+		$(document).ready(function() {
+			var thisUrl = window.location.href;
+			if (thisUrl.indexOf('?') != -1) {
+				var hash = window.location.href.split('?');
+				hash = hash[hash.length -1];
+				var loadedHaiku;
+				$.getJSON ( '/haiku/' + hash, function(data) {
+					loadedHaiku = data;
+					var lineOne = loadedHaiku[0];
+					var lineTwo = loadedHaiku[1];
+					var lineThree = loadedHaiku[2];
+					$('#selectOne').val(lineOne);
+					$('#selectOne').trigger("chosen:updated");
+					$('#selectTwo').val(lineTwo);
+					$('#selectTwo').trigger("chosen:updated");
+					$('#selectThree').val(lineThree);
+					$('#selectThree').trigger("chosen:updated");
+				});
+			}
+
+			$("#sidebar-toggle").click(function(e) {
+				e.preventDefault();
+				$("#sidebar-wrapper").toggleClass("toggled");
+			});
 		});
 	}
 
