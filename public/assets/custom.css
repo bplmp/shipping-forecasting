@@ -20,6 +20,18 @@ body {
   white-space: nowrap;
   font-size: 1em;
 }
+.back-link {
+  font-size: 1em;
+}
+@media only screen and (max-width: 380px) {
+  .one-liner {
+    font-size: 3em;
+  }
+  .back-link {
+    font-size: 3em;
+  }
+}
+
 .site-wrapper-inner {
   overflow-x: auto;
 }
