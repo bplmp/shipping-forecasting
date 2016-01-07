@@ -1,0 +1,101 @@
+<html>
+<head>
+	<script src="/assets/jquery-1.11.3.min.js"></script>
+	<script src="/assets/bootstrap.min.js"></script>
+	<link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/assets/bootstrap.css" media="screen" title="no title" charset="utf-8">
+	<!-- <link rel="stylesheet" href="/assets/custom.css" media="screen" title="no title" charset="utf-8"> -->
+</head>
+<body>
+	<!-- <div class="site-wrapper"> -->
+		<!-- <div class="site-wrapper-inner"> -->
+			<!-- <div class="cover-container"> -->
+				<!-- <div class="inner cover" id="haiku-body" style="color:#FFF">
+					<p>I hate to admit this but...</p>
+					<p>This website isn't supported on mobile devices yet.</p>
+					<p>Come back when you're on a desktop.</p>
+				</div> -->
+			<!-- </div> -->
+		<!-- </div> -->
+	<!-- </div> -->
+
+	<script type="text/javascript">
+	var response;
+	$(document).ready(function() {
+		var thisUrl = window.location.href;
+		if (thisUrl.indexOf('?') != -1) {
+			var hash = window.location.href.split('?');
+			hash = hash[hash.length -1];
+			var loadedHaiku;
+			$.getJSON ( '/haiku/' + hash, function(data) {
+				loadedHaiku = data;
+				var lineOne = loadedHaiku[0];
+				var lineTwo = loadedHaiku[1];
+				var lineThree = loadedHaiku[2];
+				$('#selectOne').val(lineOne);
+				$('#selectOne').trigger("chosen:updated");
+				$('#selectTwo').val(lineTwo);
+				$('#selectTwo').trigger("chosen:updated");
+				$('#selectThree').val(lineThree);
+				$('#selectThree').trigger("chosen:updated");
+			});
+		} else {
+			$.get ( '/list/range?min=0&max=10', function(data) {
+				// console.log(data);
+
+				for (var i = 0; i < data.length; i++) {
+					data[i] = JSON.parse(data[i]);
+				}
+
+				// console.log(data);
+				response = data;
+
+
+				for (var i = 0; i < data.length; i++) {
+					$('body').append('<ul id=' + [i] +'>' + '</li>');
+					// console.log(data[i]);
+					for (var j = 0; j < 3; j++) {
+						if (data[i][j] != null) {
+							$('#' + [i]).append('<li id=' + [i] + '_' + [j] +'>' + '</li>');
+							for (var k = 0; k < data[i][j].length; k++) {
+								var word = data[i][j][k].split('/')[1];
+								$('#' + [i] + '_' + [j]).append('<span>' + word + ' </span>')
+							}
+						}
+					}
+				}
+
+				// function parseData(element) {
+				// 	return JSON.parse(element);
+				// }
+				//
+				// data.forEach(paseData);
+
+
+				// loadedHaiku = data;
+				// var lineOne = loadedHaiku[0];
+				// var lineTwo = loadedHaiku[1];
+				// var lineThree = loadedHaiku[2];
+				// $('#selectOne').val(lineOne);
+				// $('#selectOne').trigger("chosen:updated");
+				// $('#selectTwo').val(lineTwo);
+				// $('#selectTwo').trigger("chosen:updated");
+				// $('#selectThree').val(lineThree);
+				// $('#selectThree').trigger("chosen:updated");
+			});
+		}
+	});
+	</script>
+
+	</body>
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-72002341-1', 'auto');
+	ga('send', 'pageview');
+
+	</script>
+	</html>

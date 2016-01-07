@@ -47,8 +47,8 @@ if (process.env.REDIS_URL) {
 function guid() {
   function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
+    .toString(16)
+    .substring(1);
   }
   return s4() + s4();
 }
@@ -70,9 +70,68 @@ app.post('/share', function (req, res) {
 });
 
 app.get('/haiku/:id', function (req, res) {
-  client.get(req.params.id, function(err, data){
-    res.send(data);
+  client.get(req.params.id, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(data);
+    }
   });
+});
+
+app.get('/list/length', function (req, res) {
+  client.llen('idlist', function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.sendStatus(data);
+    }
+  });
+});
+
+app.get('/list/range', function (req, res) {
+  // sample request: /list/range?min=0&max=10
+
+  // function getHaiku (id, index) {
+  //   client.get(id, function(err, data) {
+  //     if (err) {
+  //       return err;
+  //     } else {
+  //       console.log(id + ': ' + data);
+  //     }
+  //   });
+  // }
+
+  var min = req.query.min;
+  var max = req.query.max;
+  var range = max - min;
+
+  var haikus = [];
+  function getHaiku (id, index, ids) {
+    client.get(id, function(err, data) {
+      if (err) {
+        return err;
+      } else {
+        haikus[index] = data;
+        if (index === ids.length - 1) {
+          res.send(haikus);
+        }
+      }
+    });
+  }
+
+  if (range <= 10 && range > 0) {
+    client.lrange('idlist', min, max, function(err, data) {
+      if (err) {
+        console.log(err);
+      } else {
+        // res.send(data);
+        data.forEach(getHaiku);
+      }
+    });
+  } else {
+    res.send('invalid range');
+  }
 });
 
 // fs.readdir("extracted_words/", function (err, files) {
