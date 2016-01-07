@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width"/>
+
+	<title>Shipping Forecaster – Choir</title>
+
+	<script src="/assets/p5.js"></script>
+	<script src="/assets/p5.sound.js"></script>
+	<script src="/assets/jquery-1.11.3.min.js"></script>
+	<script src="/assets/bootstrap.min.js"></script>
+	<link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/assets/bootstrap.css" media="screen" title="no title" charset="utf-8">
+	<script src="/assets/jquery.scrollTo.min.js"></script>
+	<script src="/assets/jquery.color-2.1.2.min.js"></script>
+	<link rel="stylesheet" href="/assets/simple-sidebar.css" media="screen" title="no title" charset="utf-8">
+	<link rel="stylesheet" href="/assets/custom-mobile.css" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
+
+
+<div class="the-container" style="display:none">
+<!-- <div class="vertical-center" id="haiku-body"> -->
+	<ul class="one-liner">
+		<li id="third-voice"></li>
+		<li id="main-voice"></li>
+		<li id="second-voice"></li>
+		<li>
+		<a id="play-link" href="#" style="float:left">></a>
+		<a id="next-link" href="" style="float:right; margin-right:0.5em">>></a>
+		</li>
+	</ul>
+<!-- </div> -->
+
+<!-- <div class="mastfoot">
+	<div class="inner">
+		<p class="back-link"><a href="http://shipping-forecasting.herokuapp.com"><<</a></p>
+	</div>
+</div> -->
+
+</div>
+
+
+
+<script type="text/javascript">
+
+function setup () {
+	noCanvas();
+}
+
+var soundsArrayOne = [];
+var soundsArrayTwo = [];
+var soundsArrayThree = [];
+var fS;
+var currentSentence = 0;
+
+var thisUrl = window.location.href;
+if (thisUrl.indexOf('?') != -1) {
+	var hash = window.location.href.split('?');
+	hash = hash[hash.length -1];
+	currentSentence = parseInt(hash);
+}
+
+// var list1130;
+
+window.onload = function() {
+	// list1130 = loadStrings('broadcast_1130_list.txt', loadLatest);
+	loadStrings('latest.txt', init);
+}
+
+// function loadLatest() {
+// 	loadStrings('latest.txt', init);
+// }
+
+function init(forecastText) {
+	// http://stackoverflow.com/questions/1983767/only-keep-a-z-0-9-and-remove-other-characters-from-string-using-javascript
+	String.prototype.cleanupDash = function() {
+		return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "-");
+	}
+
+	String.prototype.cleanup = function() {
+		return this.toLowerCase().replace(/[^a-zA-Z0-9]+/g, "");
+	}
+
+	var wordsOne = [];
+	var wordsTwo = [];
+	var wordsThree = [];
+
+	// fS = "The shipping forecast issued by the Met Office, on behalf of the Maritime and Coastguard Agency, at 1030 UTC on Saturday 5 December 2015 for the period 1200 UTC Saturday 5 December to 1200 UTC Sunday 6 December 2015.%There are warnings of gales in all areas except Biscay, Trafalgar, and FitzRoy%The general synopsis at 0600%Low Southeast Iceland 943 expected Norwegian Basin 955 by 0600 tomorrow. New low expected Faeroes 965 by same time%The area forecasts for the next 24 hours%Viking, North Utsire%Southwesterly 7 to severe gale 9. Very rough or high. Occasional rain. Moderate, occasionally poor%South Utsire, Forties%Southwesterly gale 8 to storm 10. Very rough or high. Occasional rain. Moderate, occasionally poor%Cromarty%Southwest 7 to severe gale 9. Moderate or rough, occasionally very rough. Occasional rain. Good, occasionally poor%Forth, Tyne, Dogger, Fisher, German Bight%Southwest gale 8 to storm 10, veering west 7 to severe gale 9. Rough or very rough, occasionally high in Dogger, Fisher and German Bight. Occasional rain. Good, occasionally poor%Humber, Thames, Dover, Wight, Portland, Plymouth%Southwest 7 to severe gale 9, occasionally storm 10 at first in Thames and Dover, decreasing 6 later in Portland and Plymouth. Rough or very rough, occasionally high in Plymouth. Occasional rain. Moderate or good, occasionally poor%Northwest Biscay%Southwesterly 5 to 7. Very rough or high. Mainly fair. Moderate, occasionally poor%Southeast Biscay, Southeast Fitzroy%Southerly 4 or 5. Rough or very rough. Mainly fair. Good, occasionally poor%Northwest Fitzroy, Sole%Southwesterly 7 to severe gale 9, backing southerly or southeasterly 5 or 6 later. Very rough or high, occasionally very high at first in west Sole. Occasional rain. Poor%Lundy, Fastnet, Irish Sea, Shannon%Southwest gale 8 to storm 10, veering west 5 to 7, then decreasing 3 or 4 later except in Irish Sea. Very rough or high, occasionally very high in Shannon. Occasional rain. Moderate or poor%Rockall, Malin, Hebrides, Bailey%Southwest gale 8 to storm 10, veering west 7 to severe gale 9. High, occasionally very high at first. Rain or squally showers. Poor%Fair Isle%Southwest, veering west, 7 to severe gale 9, occasionally storm 10 at first. High, occasionally very high at first. Rain or squally showers, wintry later. Moderate or poor%Faeroes%Southwest gale 8 to storm 10, veering west or northwest 7 to severe gale 9. High, occasionally very high at first. Rain or squally wintry showers. Moderate or poor%Southeast Iceland%Westerly gale 8 to storm 10, veering northerly 7 to severe gale 9. High, occasionally very high. Rain or squally wintry showers. Moderate or poor%Trafalgar (Issued at 2315 UTC on Saturday 5 December)%Easterly 5 or 6 in far southeast, otherwise variable 3 or 4, becoming southwesterly 5 in far northwest. Moderate or rough. Fair. Good.";
+	// fS = "Shipping forecast%The shipping forecast issued by the Met Office, on behalf of the Maritime and Coastguard Agency, at 0405 UTC on Monday 7 December 2015 for the period 0600 UTC Monday 7 December to 0600 UTC Tuesday 8 December 2015.%There are warnings of gales in Viking, North Utsire, South Utsire, Forties, Cromarty, Forth, Plymouth, Trafalgar, Fitzroy, Sole, Lundy, Fastnet, Irish Sea, Shannon, Rockall, Malin, Hebrides, Bailey, Fair Isle, Faeroes, and Southeast Iceland%The general synopsis at midnight%Low 200 miles west of Shannon 978 expected 150 miles west of south east Iceland 946 by midnight tonight%The area forecasts for the next 24 hours%Viking, North Utsire, South Utsire%Northwesterly 4 or 5, veering southeasterly 6 to gale 8. Rough or very rough. Occasional rain. Good, occasionally poor%Forties, Cromarty, Forth%Southeast 5 to 7, veering southerly 6 to gale 8 later. Moderate or rough, occasionally very rough later. Occasional rain. Good, occasionally poor%Tyne, Dogger%Southeast 5 or 6, veering south 5 to 7, perhaps gale 8 later. Moderate or rough. Occasional rain, fog patches later. Moderate or good, occasionally very poor later%Fisher%West 4 or 5, backing south 5 to 7. Moderate or rough. Showers and fog patches later. Moderate or good, occasionally very poor later%German Bight, Humber%Variable 3 at first in German Bight, otherwise south or southeast 4 or 5, increasing 6 at times later. Moderate or rough. Occasional rain, fog patches. Moderate or good, occasionally very poor%Thames, Dover, Wight, Portland%Southwest backing south 5 or 6, occasionally 7 later. Moderate or rough. Rain later. Good, occasionally poor%Plymouth, Biscay%South or southwest, 5 to 7, occasionally gale 8 in Plymouth. Rough or very rough. Occasional rain. Good, occasionally poor%Fitzroy, Sole%South veering west later, 7 to severe gale 9, decreasing 5 later in south Fitzroy. Very rough or high. Rain then showers. Moderate or poor%Lundy, Fastnet, Irish Sea%South veering southwest later, 6 to gale 8, occasionally severe gale force 9. Rough or very rough, occasionally high in Fastnet. Rain. Good, occasionally poor%Shannon, Rockall%South or southeast veering west or southwest later, 7 to severe gale 9, occasionally storm force 10 at first. Very rough or high, becoming very high for a time in Rockall. Rain. Moderate or poor%Malin, Hebrides, Bailey, Fair Isle, Faeroes%Southeast veering southwest later, 7 to severe gale 9, increasing storm force 10 for a time in Bailey and Faeroes. Very rough or high, occasionally very high later in Bailey. Rain. Moderate or poor%Southeast Iceland%Southeasterly 5 to 7, increasing gale 8 to storm 10, increasing violent storm 11 for a time in west. Very rough or high, becoming high or very high later. Rain. Moderate or poor%Trafalgar (Issued at 2315 UTC on Sunday 6 December)%In southeast, southerly or southeasterly 4 or 5, occasionally 6 in east. In northwest, southerly 6 to gale 8, veering westerly 4 or 5 later. In southeast, moderate or rough. in northwest, rough or very rough. Showers. Good.";
+	// fS = "Shipping forecast%The shipping forecast issued by the Met Office, on behalf of the Maritime and Coastguard Agency, at 2315 UTC on Wednesday 9 December 2015 for the period 0000 UTC Thursday 10 December to 0000 UTC Friday 11 December 2015.%There are warnings of gales in all areas except Portland, Plymouth, Biscay, and FitzRoy%The general synopsis at 1800%Low Faeroes 971 expected Norwegian Sea 964 by 1800 Thursday. Low just south of Iceland 979 expected Bailey 986 by same time%The area forecasts for the next 24 hours%Viking%Southwest 7 to severe gale 9, occasionally storm 10. Very rough or high. Wintry showers. Moderate or poor%North Utsire, South Utsire, Forties%Southwesterly 7 to severe gale 9. Very rough or high. Wintry showers. Good, occasionally poor%Cromarty, Forth%Southwest 7 to severe gale 9. Rough or very rough. Showers. Good%Tyne, Dogger, Fisher, North German Bight%Southwesterly 6 to gale 8, occasionally severe gale 9 at first. Rough or very rough. Occasional rain, showers later. Good, occasionally moderate%South German Bight, Humber, Thames, Dover, Wight%Southwesterly 6 to gale 8. Rough or very rough. Showers then occasional rain. Good, becoming moderate, occasionally poor%Portland, Plymouth, North Biscay%Southwesterly 5 to 7. Rough or very rough. Occasional rain. Good, becoming moderate or poor%South Biscay%Southeasterly veering southwesterly 4 or 5. Moderate or rough. Mainly fair. Good%Trafalgar%Easterly 4 or 5, but 6 to gale 8 in southeast. Moderate or rough. Fair. Moderate or good%South Fitzroy%Variable 4. Moderate or rough. Fair. Good%North Fitzroy, Sole%Southwesterly becoming cyclonic later, 5 to 7, occasionally gale 8 at first. Very rough, occasionally high at first. Occasional rain. Good, occasionally poor%Lundy, Fastnet, Irish Sea%Southwest veering west 6 to gale 8, occasionally severe gale 9 at first. Rough or very rough, occasionally high at first. Occasional rain, showers later. Good, occasionally poor%Shannon, South Rockall%Westerly 7 to severe gale 9. High. Squally showers. Good, occasionally poor%North Rockall%Westerly gale 8 to storm 10. High or very high. Squally showers. Good, occasionally poor%Malin%Southwest 7 to severe gale 9. Very rough or high. Squally showers. Good, occasionally moderate%Hebrides%Southwest gale 8 to storm 10. High, occasionally very high. Squally wintry showers. Good, occasionally poor%Bailey%Southwest becoming cyclonic later, gale 8 to storm 10. High or very high. Rain or squally wintry showers. Moderate or poor%Fair Isle, Faeroes%West or southwest gale 8 to storm 10. Very rough or high, becoming high or very high later. Squally wintry showers. Moderate or poor, occasionally good%Southeast Iceland%Cyclonic 6 to gale 8, occasionally severe gale 9 in south, becoming northerly 5 to 7 later. Very rough or high. Rain or wintry showers. Good, occasionally poor";
+	// fS = '%Shipping forecast%The shipping forecast issued by the Met Office, on behalf of the Maritime and Coastguard Agency, at 0405 UTC on Sunday 13 December 2015 for the period 0600 UTC Sunday 13 December to 0600 UTC Monday 14 December 2015.%There are warnings of gales in Trafalgar, Fitzroy, Sole, Shannon,  and Rockall%The general synopsis at midnight%Low German Bight 1000 moving away east by midnight tonight. New low 100 miles west of north Fitzroy 982  by same time%The area forecasts for the next 24 hours%Viking, North Utsire, South Utsire%Northwesterly 4 or 5, becoming variable 4. Slight or moderate. Wintry showers. Good, occasionally poor %Forties, Cromarty, Forth, Tyne, Dogger%North or northwest 4 or 5, becoming variable 3 or less, then becoming cyclonic 5 or 6 later. Slight or moderate. Showers, rain later. Good, occasionally moderate %Fisher, German Bight%Northwest, backing southeast 5 or 6, decreasing 4 at times. Slight or moderate. Showers, rain later in west. Good, occasionally poor later in west %Humber, Thames, Dover%Variable 3 or 4, becoming south, 4 or 5. Slight or moderate. Occasional rain. Good, occasionally moderate %Wight, Portland, Plymouth%Southwest, backing southeast, 4 or 5, increasing 5 to 7 later in Plymouth. Slight or moderate, occasionally rough in Plymouth. Occasional drizzle. Good, occasionally moderate %Biscay%Variable 3 or less, becoming south 4 or 5, occasionally 6 later. Moderate, occasionally rough later in west. Rain later. Good, occasionally moderate later %East Fitzroy%Southerly or southwesterly 4 or 5, increasing 6 to gale 8. Moderate or rough, occasionally very rough later. Occasional rain. Good, occasionally poor %West Fitzroy%Southerly or southwesterly 6 to gale 8, perhaps severe gale 9 later in northwest. Moderate or rough, occasionally very rough later. Occasional rain. Moderate or good, occasionally poor %Sole%South or southeast 6 to gale 8, decreasing 4 or 5 at times. Rough or very rough. Occasional rain. Moderate or good, occasionally poor %Lundy, Fastnet, Irish Sea%South or southeast 4 or 5, increasing 5 to 7 later except in Irish Sea. Slight or moderate in Irish Sea, otherwise, moderate or rough, occasionally very rough later in southwest Fastnet. Occasional rain. Good, occasionally poor %Shannon%Cyclonic, mainly southeast, 5 to 7, increasing gale 8 at times. Rough or very rough. Occasional rain. Good, occasionally poor %Rockall, Malin%Variable 3 or 4 at first in north, otherwise, easterly 5 to 7, occasionally gale 8 in south Rockall. Moderate or rough, occasionally very rough in southwest Rockall. Occasional rain. Good, occasionally poor %Hebrides, Bailey%Variable 3 or 4, becoming west or southwest 5 or 6 for a time in Bailey. Moderate, occasionally rough. Showers. Good %Fair Isle, Faeroes, Southeast Iceland%Variable 3 or 4, becoming cyclonic 5 or 6 for a time. Moderate. Wintry showers. Good, occasionally poor %Trafalgar (Issued at 2315 UTC on Saturday 12 December)%Southerly or southwesterly 5 to 7, increasing gale 8 at times. Moderate or rough, occasionally very rough later. Occasional rain. Moderate or good, occasionally poor. ';
+	fS = forecastText[0];
+	fS = fS.replace(/UTC /g, '');
+
+	//https://www.sitepoint.com/community/t/regex-to-extract-whole-sentences-that-contain-a-certain-word/5408/2
+	fS = fS.replace(/[A-Z][^\\.;]*(rough)[^\\.;]*\.\s/ig, ''); //remove all sentences with the word rough - those aren't read on radio (seastate)
+	fS = fS.replace(/(2015)[^\\.;]*\./ig, ''); //remove 'for the period of...'
+
+
+	var numbersArray;
+	function substituteNumbers(string) {
+		var r = /\d+/g;
+		numbersArray = fS.match(r);
+		var digitsText = [];
+		for (var i = 0; i < numbersArray.length; i++) {
+			if(numbersArray[i].length > 2) {
+				var digits = numbersArray[i].split('');
+				for (var j = 0; j < digits.length; j++) {
+					var inText = numberToText(parseInt(digits[j]));
+					digits[j] = inText;
+				}
+				digits = digits.join(' ');
+				fS = fS.replace(numbersArray[i], digits);
+			}
+		}
+	}
+
+	substituteNumbers(fS);
+
+	fS = fS.replace(/\so\so/g, ' double-o'); //substitute zero for double-o
+
+	fS = fS.split("\%");
+
+	for(i = 0; i < fS.length; i++) {
+		fS[i] = fS[i].split(" ");
+	}
+
+	if(currentSentence === fS.length - 1) {
+		$('#next-link').attr('href', '?' + 0);
+	}	else {
+		var nextLink = currentSentence + 1;
+		$('#next-link').attr('href', '?' + nextLink);
+	}
+	document.getElementById("play-link").onclick = function playLink() {
+			listen(currentSentence);
+	}
+
+	loadSentence(currentSentence);
+
+	function displaySentence(sentenceIndex) {
+		$('#main-voice').text('');
+		$('#second-voice').text('');
+		$('#third-voice').text('');
+		for(i = sentenceIndex; i < sentenceIndex + 1; i++) {
+			for(j = 0; j < fS[i].length; j++) {
+				$('#main-voice').append('<span id="' + [i] + '\_' + [j] + '">' + fS[i][j] + '&nbsp</span>')
+				$('#second-voice').append('<span id="' + [i] + '\_' + [j] + '">' + fS[i][j] + '&nbsp</span>')
+				$('#third-voice').append('<span id="' + [i] + '\_' + [j] + '">' + fS[i][j] + '&nbsp</span>')
+			}
+		}
+	}
+
+	function loadSentence (sentenceIndex) {
+		wordsOne = [];
+		wordsTwo = [];
+		wordsThree = [];
+		soundsArrayOne = [];
+		soundsArrayTwo = [];
+		soundsArrayThree = [];
+		for(i = sentenceIndex; i < sentenceIndex + 1; i++) {
+			for(j = 0; j < fS[i].length; j++) {
+				var thisWord = (fS[i][j].cleanup());
+				var test = parseInt(thisWord || 0);
+				if (test > 0) {
+					thisWord = numberToText(test);
+				}
+				wordsOne.push(createPath('1130', thisWord));
+				wordsTwo.push(createPath('1725', thisWord));
+				wordsThree.push(createPath('0015', thisWord));
+			}
+		}
+		loadWords(wordsOne, soundsArrayOne);
+		loadWords(wordsTwo, soundsArrayTwo);
+		loadWords(wordsThree, soundsArrayThree);
+	}
+
+	function createPath(hour, word) {
+		// var reg = new RegExp(word + '_\\d+','g');
+		// var fileArray = list1130[0].match(reg);
+		// if(fileArray === null) {
+		// 	var path = '/audio/broadcast_' + hour + '/' + word + '.mp3';
+		// } else {
+		// 	var randomFile = fileArray[Math.floor(Math.random()*fileArray.length)];
+		// 	var path = '/audio/broadcast_' + hour + '/' + randomFile + '.mp3';
+		// }
+		var path = '/audio/broadcast_' + hour + '/' + word + '.mp3';
+		return path;
+	}
+
+	function loadWords(wordsArray, soundsArray) {
+		for(i = 0; i < wordsArray.length; i++) {
+			soundsArray.push(loadSound(wordsArray[i],addToCounter,addToCounter));
+		}
+	}
+
+	var loadingCounter = 0;
+	var loaded = false;
+
+	function addToCounter() {
+		loadingCounter++;
+		if(loadingCounter === wordsOne.length * 3 && wordsOne.length != 0) {
+			loaded = true;
+			displaySentence(currentSentence);
+			// $('.one-liner').css('margin-left', windowWidth/2);
+			// $('.one-liner').css('padding-right', windowWidth/2);
+			$('.the-container').fadeIn(500);
+		}
+	}
+
+	function numberToText(number) {
+		switch (parseInt(number)) {
+			case 0:
+			return "o";
+			break;
+			case 1:
+			return "one";
+			break;
+			case 2:
+			return "two";
+			break;
+			case 3:
+			return "three";
+			break;
+			case 4:
+			return "four";
+			break;
+			case 5:
+			return "five";
+			break;
+			case 6:
+			return "six";
+			break;
+			case 7:
+			return "seven";
+			break;
+			case 8:
+			return "eight";
+			break;
+			case 9:
+			return "nine";
+			break;
+			case 10:
+			return "ten";
+			break;
+			case 11:
+			return "eleven";
+			break;
+			case 12:
+			return "twelve";
+			break;
+			case 24:
+			return "24";
+			break;
+			default:
+			return;
+		}
+	}
+
+}
+
+
+
+function listen (sentence) {
+	playSentence();
+
+	function playSentence() {
+		var index = 0;
+		followWord(sentence, index, 'main-voice');
+		if(soundsArrayOne[index].buffer != null) {
+			highlightWord(sentence, index, 'main-voice');
+			soundsArrayOne[index].play();
+			soundsArrayOne[index].onended(playNextWord);
+			playSound(soundsArrayTwo[index], 'second-voice', index);
+			playSound(soundsArrayThree[index], 'third-voice', index);
+		} else {
+			playNextWord();
+		}
+
+		function playNextWord() {
+			var max = soundsArrayOne.length - 1;
+			if(index === max) {
+				$('.one-liner > li > span').animate({
+					color: "#7e7e7e"
+				}, 1000 );
+				// $('.one-liner > li > span').css('color', '#7e7e7e');
+			}
+			if(index < max) {
+				index++;
+				followWord(sentence, index, 'main-voice');
+				if(soundsArrayOne[index].buffer === null) {
+					playNextWord()
+				} else {
+					soundsArrayOne[index].play();
+					highlightWord(sentence, index, 'main-voice');
+					playSound(soundsArrayTwo[index], 'second-voice', index);
+					playSound(soundsArrayThree[index], 'third-voice', index);
+					soundsArrayOne[index].onended(playNextWord);
+
+				}
+			}
+		}
+	}
+
+	function playSound(soundFile, voiceId, index) {
+		if(soundFile.buffer != null) {
+			// if(Math.random() > 0.5) {
+				soundFile.play();
+				highlightWord(sentence, index, voiceId);
+			// }
+		}
+	}
+
+	function highlightWord(sentenceIndex, wordIndex, voice) {
+		$('#' + voice + ' > #' + sentenceIndex + '_' + wordIndex).css('color', '#fff');
+	}
+
+	function followWord(sentenceIndex, wordIndex, voice) {
+		$('body').scrollTo($('#' + voice + ' > #' + sentenceIndex + '_' + wordIndex), 100, {
+			offset: -(windowWidth/2)
+		});
+	}
+
+}
+
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72002341-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+</html>
