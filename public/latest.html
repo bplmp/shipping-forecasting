@@ -67,16 +67,9 @@ if (thisUrl.indexOf('?') != -1) {
 	currentSentence = parseInt(hash);
 }
 
-// var list1130;
-
 window.onload = function() {
-	// list1130 = loadStrings('broadcast_1130_list.txt', loadLatest);
 	loadStrings('latest.txt', init);
 }
-
-// function loadLatest() {
-// 	loadStrings('latest.txt', init);
-// }
 
 function init(forecastText) {
 	// http://stackoverflow.com/questions/1983767/only-keep-a-z-0-9-and-remove-other-characters-from-string-using-javascript
@@ -92,10 +85,6 @@ function init(forecastText) {
 	var wordsTwo = [];
 	var wordsThree = [];
 
-	// fS = "The shipping forecast issued by the Met Office, on behalf of the Maritime and Coastguard Agency, at 1030 UTC on Saturday 5 December 2015 for the period 1200 UTC Saturday 5 December to 1200 UTC Sunday 6 December 2015.%There are warnings of gales in all areas except Biscay, Trafalgar, and FitzRoy%The general synopsis at 0600%Low Southeast Iceland 943 expected Norwegian Basin 955 by 0600 tomorrow. New low expected Faeroes 965 by same time%The area forecasts for the next 24 hours%Viking, North Utsire%Southwesterly 7 to severe gale 9. Very rough or high. Occasional rain. Moderate, occasionally poor%South Utsire, Forties%Southwesterly gale 8 to storm 10. Very rough or high. Occasional rain. Moderate, occasionally poor%Cromarty%Southwest 7 to severe gale 9. Moderate or rough, occasionally very rough. Occasional rain. Good, occasionally poor%Forth, Tyne, Dogger, Fisher, German Bight%Southwest gale 8 to storm 10, veering west 7 to severe gale 9. Rough or very rough, occasionally high in Dogger, Fisher and German Bight. Occasional rain. Good, occasionally poor%Humber, Thames, Dover, Wight, Portland, Plymouth%Southwest 7 to severe gale 9, occasionally storm 10 at first in Thames and Dover, decreasing 6 later in Portland and Plymouth. Rough or very rough, occasionally high in Plymouth. Occasional rain. Moderate or good, occasionally poor%Northwest Biscay%Southwesterly 5 to 7. Very rough or high. Mainly fair. Moderate, occasionally poor%Southeast Biscay, Southeast Fitzroy%Southerly 4 or 5. Rough or very rough. Mainly fair. Good, occasionally poor%Northwest Fitzroy, Sole%Southwesterly 7 to severe gale 9, backing southerly or southeasterly 5 or 6 later. Very rough or high, occasionally very high at first in west Sole. Occasional rain. Poor%Lundy, Fastnet, Irish Sea, Shannon%Southwest gale 8 to storm 10, veering west 5 to 7, then decreasing 3 or 4 later except in Irish Sea. Very rough or high, occasionally very high in Shannon. Occasional rain. Moderate or poor%Rockall, Malin, Hebrides, Bailey%Southwest gale 8 to storm 10, veering west 7 to severe gale 9. High, occasionally very high at first. Rain or squally showers. Poor%Fair Isle%Southwest, veering west, 7 to severe gale 9, occasionally storm 10 at first. High, occasionally very high at first. Rain or squally showers, wintry later. Moderate or poor%Faeroes%Southwest gale 8 to storm 10, veering west or northwest 7 to severe gale 9. High, occasionally very high at first. Rain or squally wintry showers. Moderate or poor%Southeast Iceland%Westerly gale 8 to storm 10, veering northerly 7 to severe gale 9. High, occasionally very high. Rain or squally wintry showers. Moderate or poor%Trafalgar (Issued at 2315 UTC on Saturday 5 December)%Easterly 5 or 6 in far southeast, otherwise variable 3 or 4, becoming southwesterly 5 in far northwest. Moderate or rough. Fair. Good.";
-	// fS = "Shipping forecast%The shipping forecast issued by the Met Office, on behalf of the Maritime and Coastguard Agency, at 0405 UTC on Monday 7 December 2015 for the period 0600 UTC Monday 7 December to 0600 UTC Tuesday 8 December 2015.%There are warnings of gales in Viking, North Utsire, South Utsire, Forties, Cromarty, Forth, Plymouth, Trafalgar, Fitzroy, Sole, Lundy, Fastnet, Irish Sea, Shannon, Rockall, Malin, Hebrides, Bailey, Fair Isle, Faeroes, and Southeast Iceland%The general synopsis at midnight%Low 200 miles west of Shannon 978 expected 150 miles west of south east Iceland 946 by midnight tonight%The area forecasts for the next 24 hours%Viking, North Utsire, South Utsire%Northwesterly 4 or 5, veering southeasterly 6 to gale 8. Rough or very rough. Occasional rain. Good, occasionally poor%Forties, Cromarty, Forth%Southeast 5 to 7, veering southerly 6 to gale 8 later. Moderate or rough, occasionally very rough later. Occasional rain. Good, occasionally poor%Tyne, Dogger%Southeast 5 or 6, veering south 5 to 7, perhaps gale 8 later. Moderate or rough. Occasional rain, fog patches later. Moderate or good, occasionally very poor later%Fisher%West 4 or 5, backing south 5 to 7. Moderate or rough. Showers and fog patches later. Moderate or good, occasionally very poor later%German Bight, Humber%Variable 3 at first in German Bight, otherwise south or southeast 4 or 5, increasing 6 at times later. Moderate or rough. Occasional rain, fog patches. Moderate or good, occasionally very poor%Thames, Dover, Wight, Portland%Southwest backing south 5 or 6, occasionally 7 later. Moderate or rough. Rain later. Good, occasionally poor%Plymouth, Biscay%South or southwest, 5 to 7, occasionally gale 8 in Plymouth. Rough or very rough. Occasional rain. Good, occasionally poor%Fitzroy, Sole%South veering west later, 7 to severe gale 9, decreasing 5 later in south Fitzroy. Very rough or high. Rain then showers. Moderate or poor%Lundy, Fastnet, Irish Sea%South veering southwest later, 6 to gale 8, occasionally severe gale force 9. Rough or very rough, occasionally high in Fastnet. Rain. Good, occasionally poor%Shannon, Rockall%South or southeast veering west or southwest later, 7 to severe gale 9, occasionally storm force 10 at first. Very rough or high, becoming very high for a time in Rockall. Rain. Moderate or poor%Malin, Hebrides, Bailey, Fair Isle, Faeroes%Southeast veering southwest later, 7 to severe gale 9, increasing storm force 10 for a time in Bailey and Faeroes. Very rough or high, occasionally very high later in Bailey. Rain. Moderate or poor%Southeast Iceland%Southeasterly 5 to 7, increasing gale 8 to storm 10, increasing violent storm 11 for a time in west. Very rough or high, becoming high or very high later. Rain. Moderate or poor%Trafalgar (Issued at 2315 UTC on Sunday 6 December)%In southeast, southerly or southeasterly 4 or 5, occasionally 6 in east. In northwest, southerly 6 to gale 8, veering westerly 4 or 5 later. In southeast, moderate or rough. in northwest, rough or very rough. Showers. Good.";
-	// fS = "Shipping forecast%The shipping forecast issued by the Met Office, on behalf of the Maritime and Coastguard Agency, at 2315 UTC on Wednesday 9 December 2015 for the period 0000 UTC Thursday 10 December to 0000 UTC Friday 11 December 2015.%There are warnings of gales in all areas except Portland, Plymouth, Biscay, and FitzRoy%The general synopsis at 1800%Low Faeroes 971 expected Norwegian Sea 964 by 1800 Thursday. Low just south of Iceland 979 expected Bailey 986 by same time%The area forecasts for the next 24 hours%Viking%Southwest 7 to severe gale 9, occasionally storm 10. Very rough or high. Wintry showers. Moderate or poor%North Utsire, South Utsire, Forties%Southwesterly 7 to severe gale 9. Very rough or high. Wintry showers. Good, occasionally poor%Cromarty, Forth%Southwest 7 to severe gale 9. Rough or very rough. Showers. Good%Tyne, Dogger, Fisher, North German Bight%Southwesterly 6 to gale 8, occasionally severe gale 9 at first. Rough or very rough. Occasional rain, showers later. Good, occasionally moderate%South German Bight, Humber, Thames, Dover, Wight%Southwesterly 6 to gale 8. Rough or very rough. Showers then occasional rain. Good, becoming moderate, occasionally poor%Portland, Plymouth, North Biscay%Southwesterly 5 to 7. Rough or very rough. Occasional rain. Good, becoming moderate or poor%South Biscay%Southeasterly veering southwesterly 4 or 5. Moderate or rough. Mainly fair. Good%Trafalgar%Easterly 4 or 5, but 6 to gale 8 in southeast. Moderate or rough. Fair. Moderate or good%South Fitzroy%Variable 4. Moderate or rough. Fair. Good%North Fitzroy, Sole%Southwesterly becoming cyclonic later, 5 to 7, occasionally gale 8 at first. Very rough, occasionally high at first. Occasional rain. Good, occasionally poor%Lundy, Fastnet, Irish Sea%Southwest veering west 6 to gale 8, occasionally severe gale 9 at first. Rough or very rough, occasionally high at first. Occasional rain, showers later. Good, occasionally poor%Shannon, South Rockall%Westerly 7 to severe gale 9. High. Squally showers. Good, occasionally poor%North Rockall%Westerly gale 8 to storm 10. High or very high. Squally showers. Good, occasionally poor%Malin%Southwest 7 to severe gale 9. Very rough or high. Squally showers. Good, occasionally moderate%Hebrides%Southwest gale 8 to storm 10. High, occasionally very high. Squally wintry showers. Good, occasionally poor%Bailey%Southwest becoming cyclonic later, gale 8 to storm 10. High or very high. Rain or squally wintry showers. Moderate or poor%Fair Isle, Faeroes%West or southwest gale 8 to storm 10. Very rough or high, becoming high or very high later. Squally wintry showers. Moderate or poor, occasionally good%Southeast Iceland%Cyclonic 6 to gale 8, occasionally severe gale 9 in south, becoming northerly 5 to 7 later. Very rough or high. Rain or wintry showers. Good, occasionally poor";
-	// fS = '%Shipping forecast%The shipping forecast issued by the Met Office, on behalf of the Maritime and Coastguard Agency, at 0405 UTC on Sunday 13 December 2015 for the period 0600 UTC Sunday 13 December to 0600 UTC Monday 14 December 2015.%There are warnings of gales in Trafalgar, Fitzroy, Sole, Shannon,  and Rockall%The general synopsis at midnight%Low German Bight 1000 moving away east by midnight tonight. New low 100 miles west of north Fitzroy 982  by same time%The area forecasts for the next 24 hours%Viking, North Utsire, South Utsire%Northwesterly 4 or 5, becoming variable 4. Slight or moderate. Wintry showers. Good, occasionally poor %Forties, Cromarty, Forth, Tyne, Dogger%North or northwest 4 or 5, becoming variable 3 or less, then becoming cyclonic 5 or 6 later. Slight or moderate. Showers, rain later. Good, occasionally moderate %Fisher, German Bight%Northwest, backing southeast 5 or 6, decreasing 4 at times. Slight or moderate. Showers, rain later in west. Good, occasionally poor later in west %Humber, Thames, Dover%Variable 3 or 4, becoming south, 4 or 5. Slight or moderate. Occasional rain. Good, occasionally moderate %Wight, Portland, Plymouth%Southwest, backing southeast, 4 or 5, increasing 5 to 7 later in Plymouth. Slight or moderate, occasionally rough in Plymouth. Occasional drizzle. Good, occasionally moderate %Biscay%Variable 3 or less, becoming south 4 or 5, occasionally 6 later. Moderate, occasionally rough later in west. Rain later. Good, occasionally moderate later %East Fitzroy%Southerly or southwesterly 4 or 5, increasing 6 to gale 8. Moderate or rough, occasionally very rough later. Occasional rain. Good, occasionally poor %West Fitzroy%Southerly or southwesterly 6 to gale 8, perhaps severe gale 9 later in northwest. Moderate or rough, occasionally very rough later. Occasional rain. Moderate or good, occasionally poor %Sole%South or southeast 6 to gale 8, decreasing 4 or 5 at times. Rough or very rough. Occasional rain. Moderate or good, occasionally poor %Lundy, Fastnet, Irish Sea%South or southeast 4 or 5, increasing 5 to 7 later except in Irish Sea. Slight or moderate in Irish Sea, otherwise, moderate or rough, occasionally very rough later in southwest Fastnet. Occasional rain. Good, occasionally poor %Shannon%Cyclonic, mainly southeast, 5 to 7, increasing gale 8 at times. Rough or very rough. Occasional rain. Good, occasionally poor %Rockall, Malin%Variable 3 or 4 at first in north, otherwise, easterly 5 to 7, occasionally gale 8 in south Rockall. Moderate or rough, occasionally very rough in southwest Rockall. Occasional rain. Good, occasionally poor %Hebrides, Bailey%Variable 3 or 4, becoming west or southwest 5 or 6 for a time in Bailey. Moderate, occasionally rough. Showers. Good %Fair Isle, Faeroes, Southeast Iceland%Variable 3 or 4, becoming cyclonic 5 or 6 for a time. Moderate. Wintry showers. Good, occasionally poor %Trafalgar (Issued at 2315 UTC on Saturday 12 December)%Southerly or southwesterly 5 to 7, increasing gale 8 at times. Moderate or rough, occasionally very rough later. Occasional rain. Moderate or good, occasionally poor. ';
 	fS = forecastText[0];
 	fS = fS.replace(/UTC /g, '');
 
@@ -182,14 +171,6 @@ function init(forecastText) {
 	}
 
 	function createPath(hour, word) {
-		// var reg = new RegExp(word + '_\\d+','g');
-		// var fileArray = list1130[0].match(reg);
-		// if(fileArray === null) {
-		// 	var path = '/audio/broadcast_' + hour + '/' + word + '.mp3';
-		// } else {
-		// 	var randomFile = fileArray[Math.floor(Math.random()*fileArray.length)];
-		// 	var path = '/audio/broadcast_' + hour + '/' + randomFile + '.mp3';
-		// }
 		var path = '/audio/broadcast_' + hour + '/' + word + '.mp3';
 		return path;
 	}
@@ -274,11 +255,10 @@ function listen (sentence) {
 		var index = 0;
 		followWord(sentence, index, 'main-voice');
 		if(soundsArrayOne[index].buffer != null) {
-			highlightWord(sentence, index, 'main-voice');
-			soundsArrayOne[index].play();
-			soundsArrayOne[index].onended(playNextWord);
+			playSound(soundsArrayOne[index], 'main-voice', index);
 			playSound(soundsArrayTwo[index], 'second-voice', index);
 			playSound(soundsArrayThree[index], 'third-voice', index);
+			soundsArrayOne[index].onended(playNextWord);
 		} else {
 			playNextWord();
 		}
@@ -289,7 +269,6 @@ function listen (sentence) {
 				$('.one-liner > li > span').animate({
 					color: "#7e7e7e"
 				}, 1000 );
-				// $('.one-liner > li > span').css('color', '#7e7e7e');
 			}
 			if(index < max) {
 				index++;
@@ -297,8 +276,7 @@ function listen (sentence) {
 				if(soundsArrayOne[index].buffer === null) {
 					playNextWord()
 				} else {
-					soundsArrayOne[index].play();
-					highlightWord(sentence, index, 'main-voice');
+					playSound(soundsArrayOne[index], 'main-voice', index);
 					playSound(soundsArrayTwo[index], 'second-voice', index);
 					playSound(soundsArrayThree[index], 'third-voice', index);
 					soundsArrayOne[index].onended(playNextWord);
