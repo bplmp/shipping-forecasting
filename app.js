@@ -92,16 +92,6 @@ app.get('/list/length', function (req, res) {
 app.get('/list/range', function (req, res) {
   // sample request: /list/range?min=0&max=10
 
-  // function getHaiku (id, index) {
-  //   client.get(id, function(err, data) {
-  //     if (err) {
-  //       return err;
-  //     } else {
-  //       console.log(id + ': ' + data);
-  //     }
-  //   });
-  // }
-
   var min = req.query.min;
   var max = req.query.max;
   var range = max - min;
@@ -133,22 +123,6 @@ app.get('/list/range', function (req, res) {
     res.send('invalid range');
   }
 });
-
-// fs.readdir("extracted_words/", function (err, files) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log("File names read.");
-//     var fileName = "fileList.txt";
-//     fs.writeFile(fileName, files, function (err) {
-//       if (err) {
-//         console.log(err);
-//       } else {
-//         console.log("File list updated --> " + fileName);
-//       }
-//     })
-//   }
-// });
 
 // sync version of reading files, so that page won't try to read while file is being written
 var files = fs.readdirSync("public/audio/");
