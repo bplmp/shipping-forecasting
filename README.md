@@ -1,5 +1,5 @@
 ## Shipping Forecasting
-[(Live app)](http://www.shipping-forecasting.herokuapp.com)
+[(Live app)](http://shipping-forecasting.herokuapp.com)
 
 Shipping forecaster visualizes [the latest Shipping Forecast bulletin](https://en.wikipedia.org/wiki/Shipping_Forecast), using the voices of BBC Radio 4 speakers to read it.
 
